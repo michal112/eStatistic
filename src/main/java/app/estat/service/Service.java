@@ -1,11 +1,12 @@
 package app.estat.service;
 
-import org.springframework.data.repository.Repository;
+import app.estat.model.entity.Entity;
 
 import java.util.List;
 
-public interface Service<T extends Repository, E> {
+public interface Service<E extends Entity> {
 
     List<E> getAll();
+    E save(E entity);
 
 }

@@ -1,19 +1,32 @@
 package app.estat.service;
 
-import org.apache.commons.collections.IteratorUtils;
+import app.estat.model.entity.Entity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractService<T extends CrudRepository, E> implements Service<T, E> {
+public abstract class AbstractService<T extends CrudRepository, E extends Entity> implements Service<E> {
 
     @Autowired
-    T dao;
+    private T repository;
 
     @Override
+    @SuppressWarnings("unchecked")
     public List<E> getAll() {
-        return IteratorUtils.toList(dao.findAll().iterator());
+        List<E> list = new ArrayList<>();
+
+        Iterable<E> entities = repository.findAll();
+        entities.iterator().forEachRemaining(list::add);
+
+        return list;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public E save(E entity) {
+        return (E) repository.save(entity);
     }
 
 }

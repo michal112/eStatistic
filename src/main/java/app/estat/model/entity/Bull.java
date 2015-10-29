@@ -1,21 +1,23 @@
 package app.estat.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import app.estat.model.entity.util.Consts;
 
-@Entity
-public class Bull {
+import javax.persistence.*;
+
+@javax.persistence.Entity
+@Table(name = Consts.TABLE_BULL)
+public class Bull implements Entity {
 
     @Id
     @GeneratedValue
     @Column(name = Consts.COLUMN_ID)
-    public Long id;
+    private Long id;
+
     @Column(name = Consts.COLUMN_NAME)
-    public String name;
+    private String name;
+
     @Column(name = Consts.COLUMN_NUMBER)
-    public String number;
+    private String number;
 
     public Long getId() {
         return id;
