@@ -4,7 +4,6 @@ import app.estat.model.entity.Cow;
 import app.estat.model.request.CowRequest;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class CowRequestMapper implements Mapper<CowRequest, Cow> {
 
@@ -17,7 +16,7 @@ public class CowRequestMapper implements Mapper<CowRequest, Cow> {
         cow.setBook(cowRequest.getBook());
         cow.setBirth(cowRequest.getBirth());
 
-        return null;
+        return cow;
     }
 
 }

@@ -1,6 +1,7 @@
 package app.estat.model.request;
 
 import app.estat.model.entity.Cow;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
@@ -9,6 +10,8 @@ public class CowRequest implements EntityRequest {
     private String name;
     private String number;
     private Cow.Book book;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "CET")
     private Date birth;
 
     public String getName() {

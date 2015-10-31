@@ -1,15 +1,20 @@
 package app.estat.model.response;
 
 import app.estat.model.entity.Cow;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
 public class CowResponse implements EntityResponse {
 
+    private String id;
     private String name;
     private String number;
     private Cow.Book book;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "CET")
     private Date birth;
+
     private String parentName;
     private String parentNumber;
     private Integer lactationCount;
@@ -17,6 +22,14 @@ public class CowResponse implements EntityResponse {
     private Date lastInseminationDate;
     private String lastInseminationBullName;
     private String lastInseminationBullNumber;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;

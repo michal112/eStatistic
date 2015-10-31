@@ -1,22 +1,17 @@
 package app.estat.model.response;
 
 import java.io.Serializable;
-import java.util.List;
 
-public class Response<T extends EntityResponse> implements Serializable {
+public class Response implements Serializable {
 
-    private List<T> response;
+    private Object response;
 
-    public List<T> getResponse() {
+    public Object getResponse() {
         return response;
     }
 
-    public void setResponse(List<T> response) {
+    public void setResponse(Object response) {
         this.response = response;
-    }
-
-    public void addResponse(T response) {
-        this.response.add(response);
     }
 
 }
