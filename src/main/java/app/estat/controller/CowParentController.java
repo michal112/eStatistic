@@ -1,12 +1,11 @@
 package app.estat.controller;
 
-import app.estat.model.entity.CowParent;
-import app.estat.model.mapper.Mapper;
 import app.estat.model.request.CowParentRequest;
+import app.estat.model.request.EntityRequest;
 import app.estat.model.request.Request;
 import app.estat.model.response.CowParentResponse;
 import app.estat.model.response.Response;
-import app.estat.service.Service;
+import app.estat.service.EntityService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -15,40 +14,40 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.annotation.PostConstruct;
 
 @RestController
 @RequestMapping(value = "/rest/cowParents")
-public class CowParentController {
+public class CowParentController implements Controller {
 
     @Autowired
-    private Service<CowParent> cowParentService;
+    private EntityService<CowParentRequest, CowParentResponse> cowParentService;
 
-    @Autowired
-    private Mapper<CowParent, CowParentResponse> cowParentResponseMapper;
+    private Response response;
 
-    @Autowired
-    private Mapper<CowParentRequest, CowParent> cowParentRequestMapper;
+    @PostConstruct
+    public void init() {
+        response = new Response();
+    }
 
-    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response getAll() {
-        List<CowParent> cowParents = cowParentService.getAll();
-        List<CowParentResponse> cowParentResponses = new ArrayList<>();
-        Response response = new Response();
-
-        cowParents.forEach(cowParent -> cowParentResponses.add(cowParentResponseMapper.map(cowParent)));
-        response.setResponse(cowParentResponses);
-
+    @Override
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response get(String fakeId) {
+        response.setResponse(cowParentService.get(fakeId));
         return response;
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response saveCowParent(@RequestBody Request<CowParentRequest> request) {
-        CowParent cowParent = cowParentRequestMapper.map(request.getRequest());
+    @Override
+    @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response getAll() {
+        response.setResponse(cowParentService.getAll());
+        return response;
+    }
 
-        Response response = new Response();
-        response.setResponse(cowParentResponseMapper.map(cowParentService.save(cowParent)));
+    @Override
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public <T extends EntityRequest> Response save(@RequestBody Request<T> request) {
+        response.setResponse(cowParentService.save((CowParentRequest) request.getRequest()));
         return response;
     }
 

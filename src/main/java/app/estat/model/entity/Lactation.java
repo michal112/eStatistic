@@ -1,26 +1,27 @@
 package app.estat.model.entity;
 
-import app.estat.model.entity.util.Consts;
+import app.estat.Application;
 
 import javax.persistence.*;
 import java.util.Date;
 
 @javax.persistence.Entity
-@Table(name = Consts.TABLE_LACTATION)
+@Table(name = Application.Consts.TABLE_LACTATION)
 public class Lactation implements Entity {
 
     @Id
     @GeneratedValue
-    @Column(name = Consts.COLUMN_ID)
+    @Column(name = Application.Consts.COLUMN_ID)
     private Long id;
 
-    @Column(name = Consts.COLUMN_DATE)
+    @Column(name = Application.Consts.COLUMN_DATE)
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Cow.class)
-    @JoinColumn(name = Consts.COLUMN_LACTATION_COW)
+    @JoinColumn(name = Application.Consts.COLUMN_LACTATION_COW)
     private Cow cow;
 
+    @Override
     public Long getId() {
         return id;
     }

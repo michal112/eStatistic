@@ -1,24 +1,25 @@
 package app.estat.model.entity;
 
-import app.estat.model.entity.util.Consts;
+import app.estat.Application;
 
 import javax.persistence.*;
 
 @javax.persistence.Entity
-@Table(name = Consts.TABLE_BULL)
+@Table(name = Application.Consts.TABLE_BULL)
 public class Bull implements Entity {
 
     @Id
     @GeneratedValue
-    @Column(name = Consts.COLUMN_ID)
+    @Column(name = Application.Consts.COLUMN_ID)
     private Long id;
 
-    @Column(name = Consts.COLUMN_NAME)
+    @Column(name = Application.Consts.COLUMN_NAME)
     private String name;
 
-    @Column(name = Consts.COLUMN_NUMBER)
+    @Column(name = Application.Consts.COLUMN_NUMBER)
     private String number;
 
+    @Override
     public Long getId() {
         return id;
     }

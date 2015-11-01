@@ -1,3 +1,7 @@
 package app.estat.model.entity;
 
-public interface Entity {}
+public interface Entity {
+
+    Long getId();
+
+}

@@ -1,35 +1,35 @@
 package app.estat.model.entity;
 
-import app.estat.model.entity.util.Consts;
+import app.estat.Application;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
 @javax.persistence.Entity
-@Table(name = Consts.TABLE_COW)
+@Table(name = Application.Consts.TABLE_COW)
 public class Cow implements Entity {
 
     @Id
     @GeneratedValue
-    @Column(name = Consts.COLUMN_ID)
+    @Column(name = Application.Consts.COLUMN_ID)
     private Long id;
 
-    @Column(name = Consts.COLUMN_NAME)
+    @Column(name = Application.Consts.COLUMN_NAME)
     private String name;
 
-    @Column(name = Consts.COLUMN_NUMBER)
+    @Column(name = Application.Consts.COLUMN_NUMBER)
     private String number;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = Consts.COLUMN_BOOK)
+    @Column(name = Application.Consts.COLUMN_BOOK)
     private Book book;
 
-    @Column(name = Consts.COLUMN_BIRTH)
+    @Column(name = Application.Consts.COLUMN_BIRTH)
     private Date birth;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CowParent.class)
-    @JoinColumn(name = Consts.COLUMN_COW_PARENT)
+    @JoinColumn(name = Application.Consts.COLUMN_COW_PARENT)
     private CowParent parent;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cow", targetEntity = Lactation.class)
@@ -38,6 +38,7 @@ public class Cow implements Entity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cow", targetEntity = Insemination.class)
     private Set<Insemination> inseminations;
 
+    @Override
     public Long getId() {
         return id;
     }

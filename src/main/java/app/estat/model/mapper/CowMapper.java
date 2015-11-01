@@ -1,5 +1,6 @@
 package app.estat.model.mapper;
 
+import app.estat.model.request.CowRequest;
 import app.estat.model.response.CowResponse;
 import app.estat.model.entity.Cow;
 import app.estat.model.entity.CowParent;
@@ -12,19 +13,19 @@ import java.util.Collections;
 import java.util.Set;
 
 @Component
-public class CowResponseMapper implements Mapper<Cow, CowResponse> {
+public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
 
     @Override
-    public CowResponse map(Cow cow) {
+    public CowResponse mapEntityToResponse(Cow cow) {
         CowResponse cowResponse = new CowResponse();
 
         cowResponse.setName(cow.getName());
         cowResponse.setNumber(cow.getNumber());
         cowResponse.setBook(cow.getBook());
         cowResponse.setBirth(cow.getBirth());
-        cowResponse.setId(String.valueOf(cow.getId().intValue() + cow.getName().hashCode()
-                + cow.getNumber().hashCode()));
+        cowResponse.setId(getEntityResponseId(cow));
 
+        //TODO refactor
         CowParent parent = cow.getParent();
         if (parent != null) {
             cowResponse.setParentName(parent.getName());
@@ -61,6 +62,18 @@ public class CowResponseMapper implements Mapper<Cow, CowResponse> {
         }
 
         return cowResponse;
+    }
+
+    @Override
+    public Cow mapRequestToEntity(CowRequest cowRequest) {
+        Cow cow = new Cow();
+
+        cow.setName(cowRequest.getName());
+        cow.setNumber(cowRequest.getNumber());
+        cow.setBook(cowRequest.getBook());
+        cow.setBirth(cowRequest.getBirth());
+
+        return cow;
     }
 
 }
