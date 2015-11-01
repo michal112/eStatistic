@@ -1,7 +1,6 @@
 package app.estat.controller;
 
 import app.estat.model.request.CowParentRequest;
-import app.estat.model.request.EntityRequest;
 import app.estat.model.request.Request;
 import app.estat.model.response.CowParentResponse;
 import app.estat.model.response.Response;
@@ -18,7 +17,7 @@ import javax.annotation.PostConstruct;
 
 @RestController
 @RequestMapping(value = "/rest/cowParents")
-public class CowParentController implements Controller {
+public class CowParentController implements Controller<CowParentRequest> {
 
     @Autowired
     private EntityService<CowParentRequest, CowParentResponse> cowParentService;
@@ -46,8 +45,8 @@ public class CowParentController implements Controller {
 
     @Override
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public <T extends EntityRequest> Response save(@RequestBody Request<T> request) {
-        response.setResponse(cowParentService.save((CowParentRequest) request.getRequest()));
+    public Response save(@RequestBody Request<CowParentRequest> request) {
+        response.setResponse(cowParentService.save(request.getRequest()));
         return response;
     }
 

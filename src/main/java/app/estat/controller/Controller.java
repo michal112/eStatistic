@@ -7,10 +7,10 @@ import app.estat.model.response.Response;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-public interface Controller {
+public interface Controller<T extends EntityRequest> {
 
     Response get(@PathVariable(value = "id") String fakeId);
     Response getAll();
-    <T extends EntityRequest> Response save(@RequestBody Request<T> request);
+    Response save(@RequestBody Request<T> request);
 
 }

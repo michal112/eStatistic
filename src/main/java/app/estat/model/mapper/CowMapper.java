@@ -3,7 +3,6 @@ package app.estat.model.mapper;
 import app.estat.model.request.CowRequest;
 import app.estat.model.response.CowResponse;
 import app.estat.model.entity.Cow;
-import app.estat.model.entity.CowParent;
 import app.estat.model.entity.Insemination;
 import app.estat.model.entity.Lactation;
 
@@ -23,23 +22,21 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
         cowResponse.setNumber(cow.getNumber());
         cowResponse.setBook(cow.getBook());
         cowResponse.setBirth(cow.getBirth());
+
         cowResponse.setId(getEntityResponseId(cow));
 
-        //TODO refactor
-        CowParent parent = cow.getParent();
-        if (parent != null) {
-            cowResponse.setParentName(parent.getName());
-            cowResponse.setParentNumber(parent.getNumber());
+        if (cow.getParent() != null) {
+            cowResponse.setParentName(cow.getParent().getName());
+            cowResponse.setParentNumber(cow.getParent().getNumber());
         } else {
             cowResponse.setParentName(null);
             cowResponse.setParentNumber(null);
         }
 
         Set<Lactation> lactations = cow.getLactations();
+        //TODO
         if (lactations != null && !lactations.isEmpty()) {
-            Lactation lastLactation = Collections.max(lactations, (o1, o2) ->
-                    o1.getDate().getTime() > o2.getDate().getTime() ? 1 :
-                            o1.getDate().getTime() == o2.getDate().getTime() ? 0 : -1);
+            Collections.sort(lactations);
             cowResponse.setLastLactationDate(lastLactation.getDate());
             cowResponse.setLactationCount(lactations.size());
         } else {
@@ -76,4 +73,7 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
         return cow;
     }
 
+    private Object getLastObjectFromCollection() {
+        return lastObjectFromCollection;
+    }
 }

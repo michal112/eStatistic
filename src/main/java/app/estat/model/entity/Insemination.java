@@ -7,7 +7,7 @@ import java.util.Date;
 
 @javax.persistence.Entity
 @Table(name = Application.Consts.TABLE_INSEMINATION)
-public class Insemination implements Entity {
+public class Insemination implements Entity, Comparable<Insemination> {
 
     @Id
     @GeneratedValue
@@ -56,6 +56,11 @@ public class Insemination implements Entity {
 
     public void setCow(Cow cow) {
         this.cow = cow;
+    }
+
+    @Override
+    public int compareTo(Insemination o) {
+        return o.getDate().getTime() > date.getTime() ? -1 : o.getDate().getTime() == date.getTime() ? 0 : 1;
     }
 
 }
