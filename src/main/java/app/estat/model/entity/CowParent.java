@@ -1,22 +1,25 @@
 package app.estat.model.entity;
 
+import app.estat.Application;
+
 import javax.persistence.*;
 
-@Entity
-@Table(name = Consts.TABLE_COW_PARENT)
-public class CowParent {
+@javax.persistence.Entity
+@Table(name = Application.Consts.TABLE_COW_PARENT)
+public class CowParent implements Entity {
 
     @Id
     @GeneratedValue
-    @Column(name = Consts.COLUMN_ID)
-    public Long id;
+    @Column(name = Application.Consts.COLUMN_ID)
+    private Long id;
 
-    @Column(name = Consts.COLUMN_NAME)
-    public String name;
+    @Column(name = Application.Consts.COLUMN_NAME)
+    private String name;
 
-    @Column(name = Consts.COLUMN_NUMBER)
-    public String number;
+    @Column(name = Application.Consts.COLUMN_NUMBER)
+    private String number;
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -25,20 +28,20 @@ public class CowParent {
         this.id = id;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
     }
 
 }
