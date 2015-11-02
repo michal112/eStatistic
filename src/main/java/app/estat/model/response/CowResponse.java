@@ -18,8 +18,13 @@ public class CowResponse implements EntityResponse {
     private String parentName;
     private String parentNumber;
     private Integer lactationCount;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "CET")
     private Date lastLactationDate;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "CET")
     private Date lastInseminationDate;
+
     private String lastInseminationBullName;
     private String lastInseminationBullNumber;
 

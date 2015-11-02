@@ -43,4 +43,12 @@ public abstract class AbstractEntityService<T extends CrudRepository, E extends 
         return mapper.mapEntityToResponse((E) repository.save(mapper.mapRequestToEntity(entityRequest)));
     }
 
+    protected T getRepository() {
+        return repository;
+    }
+
+    protected EntityMapper<E, R, R1> getMapper() {
+        return mapper;
+    }
+
 }

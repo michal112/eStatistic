@@ -59,7 +59,7 @@ public class Lactation implements Entity, Comparable<Lactation> {
 
     @Override
     public int compareTo(Lactation o) {
-        return o.getDate().getTime() > date.getTime() ? -1 : o.getDate().getTime() == date.getTime() ? 0 : 1;
+        return o.getDate().getTime() > date.getTime() ? 1 : o.getDate().getTime() == date.getTime() ? 0 : -1;
     }
 
 }

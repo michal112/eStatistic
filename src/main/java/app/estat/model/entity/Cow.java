@@ -4,7 +4,7 @@ import app.estat.Application;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 
 @javax.persistence.Entity
 @Table(name = Application.Consts.TABLE_COW)
@@ -33,10 +33,10 @@ public class Cow implements Entity {
     private CowParent parent;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cow", targetEntity = Lactation.class)
-    private Set<Lactation> lactations;
+    private List<Lactation> lactations;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cow", targetEntity = Insemination.class)
-    private Set<Insemination> inseminations;
+    private List<Insemination> inseminations;
 
     @Override
     public Long getId() {
@@ -87,19 +87,19 @@ public class Cow implements Entity {
         this.parent = parent;
     }
 
-    public Set<Lactation> getLactations() {
+    public List<Lactation> getLactations() {
         return lactations;
     }
 
-    public void setLactations(Set<Lactation> lactations) {
+    public void setLactations(List<Lactation> lactations) {
         this.lactations = lactations;
     }
 
-    public Set<Insemination> getInseminations() {
+    public List<Insemination> getInseminations() {
         return inseminations;
     }
 
-    public void setInseminations(Set<Insemination> inseminations) {
+    public void setInseminations(List<Insemination> inseminations) {
         this.inseminations = inseminations;
     }
 

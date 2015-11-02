@@ -60,7 +60,7 @@ public class Insemination implements Entity, Comparable<Insemination> {
 
     @Override
     public int compareTo(Insemination o) {
-        return o.getDate().getTime() > date.getTime() ? -1 : o.getDate().getTime() == date.getTime() ? 0 : 1;
+        return o.getDate().getTime() > date.getTime() ? 1 : o.getDate().getTime() == date.getTime() ? 0 : -1;
     }
 
 }

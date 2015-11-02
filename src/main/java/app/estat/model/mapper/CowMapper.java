@@ -9,7 +9,7 @@ import app.estat.model.entity.Lactation;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
@@ -33,10 +33,9 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
             cowResponse.setParentNumber(null);
         }
 
-        Set<Lactation> lactations = cow.getLactations();
-        //TODO
+        List<Lactation> lactations = cow.getLactations();
         if (lactations != null && !lactations.isEmpty()) {
-            Collections.sort(lactations);
+            Lactation lastLactation = getLastObjectFromCollection(lactations);
             cowResponse.setLastLactationDate(lastLactation.getDate());
             cowResponse.setLactationCount(lactations.size());
         } else {
@@ -44,11 +43,9 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
             cowResponse.setLactationCount(null);
         }
 
-        Set<Insemination> inseminations = cow.getInseminations();
+        List<Insemination> inseminations = cow.getInseminations();
         if (inseminations != null && !inseminations.isEmpty()) {
-            Insemination lastInsemination = Collections.max(inseminations, (o1, o2) ->
-                    o1.getDate().getTime() > o2.getDate().getTime() ? 1 :
-                            o1.getDate().getTime() == o2.getDate().getTime() ? 0 : -1);
+            Insemination lastInsemination = getLastObjectFromCollection(inseminations);
             cowResponse.setLastInseminationBullName(lastInsemination.getBull().getName());
             cowResponse.setLastInseminationBullNumber(lastInsemination.getBull().getNumber());
             cowResponse.setLastInseminationDate(lastInsemination.getDate());
@@ -73,7 +70,9 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
         return cow;
     }
 
-    private Object getLastObjectFromCollection() {
-        return lastObjectFromCollection;
+    private <T extends Comparable> T getLastObjectFromCollection(List<T> list) {
+        Collections.sort(list);
+        return list.get(0);
     }
+
 }
