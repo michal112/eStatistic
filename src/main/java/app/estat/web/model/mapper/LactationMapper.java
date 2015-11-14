@@ -1,6 +1,5 @@
 package app.estat.web.model.mapper;
 
-import app.estat.web.model.entity.Cow;
 import app.estat.web.model.entity.Lactation;
 import app.estat.web.model.request.LactationRequest;
 import app.estat.web.model.response.LactationResponse;
@@ -16,15 +15,7 @@ public class LactationMapper implements EntityMapper<Lactation, LactationRequest
 
         lactationResponse.setNumber(lactation.getNumber());
         lactationResponse.setDate(lactation.getDate());
-
-        lactationResponse.setId(getEntityResponseId(lactation));
-
-        Cow cow = lactation.getCow();
-        if (cow != null) {
-            lactationResponse.setCowName(cow.getName());
-        } else {
-            lactationResponse.setCowName(null);
-        }
+        lactationResponse.setId(lactation.getId());
 
         return lactationResponse;
     }

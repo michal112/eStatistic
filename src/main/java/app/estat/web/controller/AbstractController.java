@@ -1,5 +1,7 @@
 package app.estat.web.controller;
 
+import app.estat.web.model.entity.Entity;
+import app.estat.web.model.mapper.EntityMapper;
 import app.estat.web.model.request.EntityRequest;
 import app.estat.web.model.request.Request;
 import app.estat.web.model.response.EntityResponse;
@@ -15,38 +17,68 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.PostConstruct;
 
-public abstract class AbstractController<R extends EntityRequest, R1 extends EntityResponse> {
+import java.util.stream.Collectors;
+
+public abstract class AbstractController<E extends Entity, R extends EntityRequest, R1 extends EntityResponse> {
 
     @Autowired
-    private EntityService<R, R1> entityService;
+    private EntityService<E> entityService;
+
+    @Autowired
+    private EntityMapper<E, R, R1> entityMapper;
 
     private Response response;
 
     @PostConstruct
-    public void init() {
+    private void init() {
         response = new Response();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response get(@PathVariable(value = "id") String fakeId) {
-        response.setResponse(entityService.get(fakeId));
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response save(@RequestBody Request<R> request) {
+        response.setResponseContent(entityMapper.mapEntityToResponse(
+                entityService.save(entityMapper.mapRequestToEntity(request.getRequestContent()))));
+
         return response;
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response getAll() {
-        response.setResponse(entityService.getAll());
+        response.setResponseContent(entityService.getAll()
+                .stream().map(entityMapper::mapEntityToResponse).collect(Collectors.toList()));
+
         return response;
     }
 
-    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response save(@RequestBody Request<R> request) {
-        response.setResponse(entityService.save(request.getRequest()));
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response get(@PathVariable(value = "id") Long id) {
+        response.setResponseContent(entityMapper.mapEntityToResponse(entityService.get(id)));
+
         return response;
     }
 
-    protected EntityService<R, R1> getEntityService() {
+    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response update(@PathVariable(value = "id") Long id, @RequestBody Request<R> request) {
+        response.setResponseContent(entityMapper.mapEntityToResponse(entityService.update(
+                id, entityMapper.mapRequestToEntity(request.getRequestContent()))));
+
+        return response;
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response delete(@PathVariable(value = "id") Long id) {
+        entityService.delete(id);
+
+        response.setResponseContent("Entity successfully deleted");
+        return response;
+    }
+
+    protected EntityService<E> getEntityService() {
         return entityService;
+    }
+
+    protected EntityMapper<E, R, R1> getEntityMapper() {
+        return entityMapper;
     }
 
     protected Response getResponse() {

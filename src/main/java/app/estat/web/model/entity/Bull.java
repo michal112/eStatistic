@@ -3,21 +3,25 @@ package app.estat.web.model.entity;
 import app.estat.web.Application;
 
 import javax.persistence.*;
+import java.util.List;
 
 @javax.persistence.Entity
-@Table(name = Application.Consts.TABLE_BULL)
+@Table(name = Application.Constant.TABLE_BULL)
 public class Bull implements app.estat.web.model.entity.Entity {
 
     @Id
     @GeneratedValue
-    @Column(name = Application.Consts.COLUMN_ID)
+    @Column(name = Application.Constant.COLUMN_ID)
     private Long id;
 
-    @Column(name = Application.Consts.COLUMN_NAME)
+    @Column(name = Application.Constant.COLUMN_NAME)
     private String name;
 
-    @Column(name = Application.Consts.COLUMN_NUMBER)
+    @Column(name = Application.Constant.COLUMN_NUMBER)
     private String number;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bull", targetEntity = Insemination.class)
+    private List<Insemination> inseminations;
 
     @Override
     public Long getId() {
@@ -42,6 +46,14 @@ public class Bull implements app.estat.web.model.entity.Entity {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public List<Insemination> getInseminations() {
+        return inseminations;
+    }
+
+    public void setInseminations(List<Insemination> inseminations) {
+        this.inseminations = inseminations;
     }
 
 }

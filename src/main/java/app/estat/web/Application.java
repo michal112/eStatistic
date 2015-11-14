@@ -10,7 +10,7 @@ public class Application {
         SpringApplication.run(Application.class);
     }
 
-    public static class Consts {
+    public static class Constant {
 
         public static final String TABLE_COW = "cow";
         public static final String TABLE_COW_PARENT = "cow_parent";

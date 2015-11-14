@@ -4,10 +4,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class LactationResponse implements EntityResponse {
+public class InseminationResponse implements EntityResponse {
 
     private Long id;
-    private Integer number;
+    private String bullName;
+    private String bullNumber;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd", timezone = "CET")
     private Date date;
@@ -20,12 +21,20 @@ public class LactationResponse implements EntityResponse {
         this.id = id;
     }
 
-    public Integer getNumber() {
-        return number;
+    public String getBullName() {
+        return bullName;
     }
 
-    public void setNumber(Integer number) {
-        this.number = number;
+    public void setBullName(String bullName) {
+        this.bullName = bullName;
+    }
+
+    public String getBullNumber() {
+        return bullNumber;
+    }
+
+    public void setBullNumber(String bullNumber) {
+        this.bullNumber = bullNumber;
     }
 
     public Date getDate() {

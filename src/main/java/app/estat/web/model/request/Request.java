@@ -1,15 +1,18 @@
 package app.estat.web.model.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Request<T extends EntityRequest> {
 
-    private T request;
+    @JsonProperty(value = "request")
+    private T requestContent;
 
-    public T getRequest() {
-        return request;
+    public T getRequestContent() {
+        return requestContent;
     }
 
-    public void setRequest(T request) {
-        this.request = request;
+    public void setRequestContent(T requestContent) {
+        this.requestContent = requestContent;
     }
 
 }

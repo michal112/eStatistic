@@ -1,13 +1,14 @@
 package app.estat.web.model.response;
 
 import app.estat.web.model.entity.Cow;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
 public class CowResponse implements EntityResponse {
 
-    private String id;
+    private Long id;
     private String name;
     private String number;
     private Cow.Book book;
@@ -28,11 +29,11 @@ public class CowResponse implements EntityResponse {
     private String lastInseminationBullName;
     private String lastInseminationBullNumber;
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

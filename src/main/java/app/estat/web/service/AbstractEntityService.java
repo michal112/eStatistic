@@ -1,54 +1,93 @@
 package app.estat.web.service;
 
 import app.estat.web.model.entity.Entity;
-import app.estat.web.model.mapper.EntityMapper;
-import app.estat.web.model.request.EntityRequest;
-import app.estat.web.model.response.EntityResponse;
+
+import org.apache.commons.beanutils.BeanUtilsBean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEntityService<T extends CrudRepository, E extends Entity, R extends EntityRequest,
-            R1 extends EntityResponse> implements EntityService<R, R1> {
+public abstract class AbstractEntityService<R extends CrudRepository, E extends Entity>
+        implements EntityService<E> {
 
     @Autowired
-    private T repository;
-
-    @Autowired
-    private EntityMapper<E, R, R1> mapper;
+    private R repository;
 
     @Override
     @SuppressWarnings("unchecked")
-    public R1 get(String fakeid) {
-        return mapper.mapEntityToResponse((E) repository.findOne(mapper.getEntityId(fakeid)));
+    public E save(E entity) {
+        return (E) repository.save(entity);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<R1> getAll() {
-        List<R1> responses = new ArrayList<>();
+    public List<E> getAll() {
+        List<E> entities = new ArrayList<>();
 
-        Iterable<E> entities = repository.findAll();
-        entities.iterator().forEachRemaining(entity -> responses.add(mapper.mapEntityToResponse(entity)));
+        repository.findAll().iterator().forEachRemaining(
+                entity -> entities.add((E) entity));
 
-        return responses;
+        return entities;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public R1 save(R entityRequest) {
-        return mapper.mapEntityToResponse((E) repository.save(mapper.mapRequestToEntity(entityRequest)));
+    public E get(Long id) {
+        try {
+            E entity = (E) repository.findOne(id);
+
+            if (entity == null) {
+                throw new RuntimeException("no such entity");
+            }
+
+            return entity;
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("id cannot be null");
+        }
     }
 
-    protected T getRepository() {
+    @Override
+    public E update(Long id, E entity) {
+        E dest = get(id);
+
+        BeanUtilsBean notNull = new NullAwareBeanUtilsBean();
+        try {
+            notNull.copyProperties(dest, entity);
+        } catch (IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("error while updating entity");
+        }
+
+        return save(dest);
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public void delete(Long id) {
+        try {
+            repository.delete(id);
+        } catch (IllegalArgumentException e) {
+            throw new RuntimeException("id cannot be null");
+        }
+    }
+
+    protected R getRepository() {
         return repository;
     }
 
-    protected EntityMapper<E, R, R1> getMapper() {
-        return mapper;
+    private class NullAwareBeanUtilsBean extends BeanUtilsBean {
+        @Override
+        public void copyProperty(Object bean, String name, Object value)
+                throws IllegalAccessException, InvocationTargetException {
+            if (value == null) {
+                return;
+            }
+
+            super.copyProperty(bean, name, value);
+        }
     }
 
 }
