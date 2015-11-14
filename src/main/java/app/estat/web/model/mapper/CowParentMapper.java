@@ -15,8 +15,7 @@ public class CowParentMapper implements EntityMapper<CowParent, CowParentRequest
 
         cowParentResponse.setName(cowParent.getName());
         cowParentResponse.setNumber(cowParent.getNumber());
-
-        cowParentResponse.setId(getEntityResponseId(cowParent));
+        cowParentResponse.setId(cowParent.getId());
 
         return cowParentResponse;
     }

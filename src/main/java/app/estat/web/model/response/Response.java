@@ -1,17 +1,18 @@
 package app.estat.web.model.response;
 
-import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Response implements Serializable {
+public class Response {
 
-    private Object response;
+    @JsonProperty(value = "response")
+    private Object responseContent;
 
-    public Object getResponse() {
-        return response;
+    public Object getResponseContent() {
+        return responseContent;
     }
 
-    public void setResponse(Object response) {
-        this.response = response;
+    public void setResponseContent(Object responseContent) {
+        this.responseContent = responseContent;
     }
 
 }

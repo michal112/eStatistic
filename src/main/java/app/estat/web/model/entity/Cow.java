@@ -7,29 +7,29 @@ import java.util.Date;
 import java.util.List;
 
 @javax.persistence.Entity
-@Table(name = Application.Consts.TABLE_COW)
+@Table(name = Application.Constant.TABLE_COW)
 public class Cow implements app.estat.web.model.entity.Entity {
 
     @Id
     @GeneratedValue
-    @Column(name = Application.Consts.COLUMN_ID)
+    @Column(name = Application.Constant.COLUMN_ID)
     private Long id;
 
-    @Column(name = Application.Consts.COLUMN_NAME)
+    @Column(name = Application.Constant.COLUMN_NAME)
     private String name;
 
-    @Column(name = Application.Consts.COLUMN_NUMBER)
+    @Column(name = Application.Constant.COLUMN_NUMBER)
     private String number;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = Application.Consts.COLUMN_BOOK)
+    @Column(name = Application.Constant.COLUMN_BOOK)
     private Book book;
 
-    @Column(name = Application.Consts.COLUMN_BIRTH)
+    @Column(name = Application.Constant.COLUMN_BIRTH)
     private Date birth;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = CowParent.class)
-    @JoinColumn(name = Application.Consts.COLUMN_COW_PARENT)
+    @JoinColumn(name = Application.Constant.COLUMN_COW_PARENT)
     private CowParent parent;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cow", targetEntity = Lactation.class)

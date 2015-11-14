@@ -22,8 +22,7 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
         cowResponse.setNumber(cow.getNumber());
         cowResponse.setBook(cow.getBook());
         cowResponse.setBirth(cow.getBirth());
-
-        cowResponse.setId(getEntityResponseId(cow));
+        cowResponse.setId(cow.getId());
 
         if (cow.getParent() != null) {
             cowResponse.setParentName(cow.getParent().getName());
@@ -72,6 +71,7 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
 
     private <T extends Comparable> T getLastObjectFromCollection(List<T> list) {
         Collections.sort(list);
+
         return list.get(0);
     }
 

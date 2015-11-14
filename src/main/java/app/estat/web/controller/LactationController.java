@@ -1,5 +1,6 @@
 package app.estat.web.controller;
 
+import app.estat.web.model.entity.Lactation;
 import app.estat.web.model.request.LactationRequest;
 import app.estat.web.model.response.LactationResponse;
 
@@ -13,11 +14,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/rest/lactations")
-public class LactationController extends AbstractController<LactationRequest, LactationResponse> {
+public class LactationController extends AbstractController<Lactation, LactationRequest, LactationResponse> {
 
-    @RequestMapping(value = "/{id}/setCow/{idCow}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response setLactationCow(@PathVariable(value = "id") String id, @PathVariable(value = "idCow") String idCow) {
-        return ((LactationService) getEntityService()).setLactationCow(id, idCow);
+    @RequestMapping(value = "/{idLactation}/setCow/{idCow}",
+            method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response setLactationCow(@PathVariable(value = "idLactation") Long idLactation,
+                                    @PathVariable(value = "idCow") Long idCow) {
+        ((LactationService) getEntityService()).setLactationCow(idLactation, idCow);
+
+        getResponse().setResponseContent("Lactation assigned to desired cow");
+        return getResponse();
     }
 
 }

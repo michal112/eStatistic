@@ -6,23 +6,23 @@ import javax.persistence.*;
 import java.util.Date;
 
 @javax.persistence.Entity
-@Table(name = Application.Consts.TABLE_INSEMINATION)
+@Table(name = Application.Constant.TABLE_INSEMINATION)
 public class Insemination implements app.estat.web.model.entity.Entity, Comparable<Insemination> {
 
     @Id
     @GeneratedValue
-    @Column(name = Application.Consts.COLUMN_ID)
+    @Column(name = Application.Constant.COLUMN_ID)
     private Long id;
 
-    @Column(name = Application.Consts.COLUMN_DATE)
+    @Column(name = Application.Constant.COLUMN_DATE)
     private Date date;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Bull.class)
-    @JoinColumn(name = Application.Consts.COLUMN_INSEMINATION_BULL)
+    @JoinColumn(name = Application.Constant.COLUMN_INSEMINATION_BULL)
     private Bull bull;
 
     @ManyToOne(fetch = FetchType.LAZY, targetEntity = Cow.class)
-    @JoinColumn(name = Application.Consts.COLUMN_INSEMINATION_COW)
+    @JoinColumn(name = Application.Constant.COLUMN_INSEMINATION_COW)
     private Cow cow;
 
     @Override

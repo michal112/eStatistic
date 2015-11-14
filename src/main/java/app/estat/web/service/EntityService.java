@@ -1,14 +1,15 @@
 package app.estat.web.service;
 
-import app.estat.web.model.request.EntityRequest;
-import app.estat.web.model.response.EntityResponse;
+import app.estat.web.model.entity.Entity;
 
 import java.util.List;
 
-public interface EntityService<R extends EntityRequest, R1 extends EntityResponse> {
+public interface EntityService<E extends Entity> {
 
-    R1 get(String fakeId);
-    List<R1> getAll();
-    R1 save(R entityRequest);
+    E save(E entity);
+    List<E> getAll();
+    E get(Long id);
+    E update(Long id, E entity);
+    void delete(Long id);
 
 }
