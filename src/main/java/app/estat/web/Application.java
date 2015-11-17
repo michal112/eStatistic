@@ -2,8 +2,10 @@ package app.estat.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
+@ActiveProfiles(value = Application.Profile.MAIN)
 public class Application {
 
     public static void main(String... args) {
@@ -29,6 +31,13 @@ public class Application {
         public static final String COLUMN_LACTATION_COW = "lactation_cow";
         public static final String COLUMN_INSEMINATION_BULL = "insemination_bull";
         public static final String COLUMN_INSEMINATION_COW = "insemination_cow";
+
+    }
+
+    public static class Profile {
+
+        public static final String TEST = "h2";
+        public static final String MAIN = "postgres";
 
     }
 
