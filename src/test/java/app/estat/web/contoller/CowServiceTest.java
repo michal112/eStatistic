@@ -29,7 +29,8 @@ public class CowServiceTest {
     private CowService cowService;
 
     private static final Logger LOG = Logger.getLogger(CowServiceTest.class.getCanonicalName());
-
+    private static final String SIMPLE_COW_NAME = "BIANKA";
+    
     @BeforeClass
     public static void setUpBeforeClass() {
         LOG.info("CowServiceTest started");
@@ -75,15 +76,7 @@ public class CowServiceTest {
         return new Cow();
     }
 
-    private Boolean assertEquals(Cow c1, Cow c2) throws IllegalAccessException {
-        for (Field field : Cow.class.getDeclaredFields()) {
-            field.setAccessible(Boolean.TRUE);
-            if (!field.get(c1).equals(field.get(c2))) {
-                return false;
-            }
-        }
-
-        return true;
-    }
+    private Boolean equalToSimpleCow(Cow cow) {
+        if (cow.getName().equals())
 
 }
