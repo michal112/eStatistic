@@ -5,6 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 
 import javax.sql.DataSource;
@@ -19,6 +21,9 @@ public class RepositoryConfiguration {
         TEST
     }
 
+    private static final String TEST_DB_NAME = "testdb";
+    private static final String TEST_DB_SCRIPT = "schema-h2.sql";
+
     private static DataSourceType CURRENT_DATA_SOURCE_TYPE;
 
     public static void setCurrentDataSourceType(DataSourceType dataSourceType) {
@@ -32,9 +37,12 @@ public class RepositoryConfiguration {
     }
 
     @Bean
-    @ConfigurationProperties(prefix = "spring.datasource.test")
     public DataSource getTestDataSource() {
-        return DataSourceBuilder.create().build();
+        EmbeddedDatabaseBuilder embeddedDatabaseBuilder = new EmbeddedDatabaseBuilder();
+
+        embeddedDatabaseBuilder.setType(EmbeddedDatabaseType.H2).setName(TEST_DB_NAME).addScript(TEST_DB_SCRIPT);
+
+        return embeddedDatabaseBuilder.build();
     }
 
     @Bean

@@ -49,4 +49,3 @@ ALTER TABLE ONLY lactation ADD CONSTRAINT fk_lactation_cow FOREIGN KEY (lactatio
 
 ALTER TABLE ONLY cow DROP CONSTRAINT IF EXISTS fk_cow_parent;
 ALTER TABLE ONLY cow ADD CONSTRAINT fk_cow_parent FOREIGN KEY (cow_parent) REFERENCES cow_parent(id);
-
