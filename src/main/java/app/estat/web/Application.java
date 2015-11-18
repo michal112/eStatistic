@@ -3,9 +3,11 @@ package app.estat.web;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 @ActiveProfiles(value = Application.Profile.MAIN)
+@EnableTransactionManagement
 public class Application {
 
     public static void main(String... args) {

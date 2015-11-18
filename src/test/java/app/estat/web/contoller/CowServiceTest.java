@@ -3,16 +3,23 @@ package app.estat.web.contoller;
 import app.estat.web.Application;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.service.CowService;
-import org.junit.Before;
+
+import app.estat.web.service.EntityService;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,48 +33,79 @@ import static org.junit.Assert.*;
 public class CowServiceTest {
 
     @Autowired
-    private CowService cowService;
+    private EntityService<Cow> cowService;
 
     private static final Logger LOG = Logger.getLogger(CowServiceTest.class.getCanonicalName());
-    private static final String SIMPLE_COW_NAME = "BIANKA";
     
     @BeforeClass
     public static void setUpBeforeClass() {
-        LOG.info("CowServiceTest started");
+        LOG.severe("CowServiceTest started");
     }
 
     @Test
-    public void testSaveCow() throws IllegalAccessException {
-        Cow cow = getSimpleCow();
-        Cow savedCow = cowService.save(cow);
-
-        assertTrue(assertEquals(cow, savedCow));
-
-        Cow emptyCow = getEmptyCow();
-        Cow emptySavedCow = cowService.save(cow);
-
-        assertTrue(assertEquals(emptyCow, emptySavedCow));
-    }
-
-    @Test
-    public void testGetAllCows() {
+    public void testSaveCow() throws IllegalAccessException, ParseException {
         List<Cow> cows = new ArrayList<>();
-        cows.add(cowService.save(getSimpleCow()));
-        cows.add(cowService.save(getEmptyCow()));
+        cows.add(getSimpleCow());
+        cows.add(getEmptyCow());
 
-        //assertEquals(cows.size(), cowService.getAll().size());
+        for (Cow cow : cows) {
+            Cow savedCow = cowService.save(cow);
+            Cow readedCow = cowService.get(savedCow.getId());
 
-        //assertEquals();
-        //verify(cowService, times(2)).getAll();
+            assertTrue(Utils.assertEquals(savedCow, readedCow, Cow.class));
+        }
     }
 
-    private Cow getSimpleCow() {
+    @Test
+    public void testGetCow() throws IllegalAccessException, ParseException {
+        Cow savedCow = cowService.save(getSimpleCow());
+        assertTrue(savedCow.getId() != null);
+
+        Cow readedCow = cowService.get(savedCow.getId());
+        assertTrue(Utils.assertEquals(savedCow, readedCow, Cow.class));
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testGetCowWithNoSuchEntityException() {
+        cowService.get(1L);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testGetCowWithNullIdException() {
+        cowService.get(null);
+    }
+
+    @Test
+    public void testGetAllCows() throws ParseException {
+        List<Cow> cows = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            cows.add(cowService.save(getSimpleCow()));
+            cows.add(cowService.save(getEmptyCow()));
+        }
+
+        assertEquals(20, cowService.getAll().size());
+    }
+
+    @After
+    public void tearDown() {
+        ((CowService) cowService).getRepository().deleteAll();
+    }
+
+    @AfterClass
+    public static void tearDownAfterClass() {
+        LOG.severe("CowServiceTest completed");
+    }
+
+    private Cow getSimpleCow() throws ParseException {
         Cow cow = new Cow();
 
         cow.setName("BIANKA");
         cow.setNumber("PL-005005445269");
         cow.setBook(Cow.Book.MAIN);
-        cow.setBirth(new Date());
+
+        String dateString = "2015-11-18";
+        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(dateString);
+        cow.setBirth(date);
 
         return cow;
     }
@@ -75,8 +113,5 @@ public class CowServiceTest {
     private Cow getEmptyCow() {
         return new Cow();
     }
-
-    private Boolean equalToSimpleCow(Cow cow) {
-        if (cow.getName().equals())
 
 }
