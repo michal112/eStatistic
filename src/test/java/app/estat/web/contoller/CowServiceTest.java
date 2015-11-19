@@ -3,8 +3,9 @@ package app.estat.web.contoller;
 import app.estat.web.Application;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.service.CowService;
+import app.estat.web.service.CowServiceImpl;
 
-import app.estat.web.service.EntityService;
+import com.sun.javaws.Main;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -15,8 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -29,11 +28,10 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes =  Application.class)
-@ActiveProfiles(value = Application.Profile.TEST)
 public class CowServiceTest {
 
     @Autowired
-    private EntityService<Cow> cowService;
+    private CowService cowService;
 
     private static final Logger LOG = Logger.getLogger(CowServiceTest.class.getCanonicalName());
     
@@ -52,7 +50,7 @@ public class CowServiceTest {
             Cow savedCow = cowService.save(cow);
             Cow readedCow = cowService.get(savedCow.getId());
 
-            assertTrue(Utils.assertEquals(savedCow, readedCow, Cow.class));
+            assertTrue(Utils.assertPropertiesEquals(savedCow, readedCow, Cow.class));
         }
     }
 
@@ -62,7 +60,7 @@ public class CowServiceTest {
         assertTrue(savedCow.getId() != null);
 
         Cow readedCow = cowService.get(savedCow.getId());
-        assertTrue(Utils.assertEquals(savedCow, readedCow, Cow.class));
+        assertTrue(Utils.assertPropertiesEquals(savedCow, readedCow, Cow.class));
     }
 
     @Test(expected = RuntimeException.class)
@@ -88,7 +86,7 @@ public class CowServiceTest {
 
     @After
     public void tearDown() {
-        ((CowService) cowService).getRepository().deleteAll();
+        cowService.deleteAll();
     }
 
     @AfterClass

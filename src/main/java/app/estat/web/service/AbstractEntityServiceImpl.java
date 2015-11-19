@@ -13,7 +13,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEntityService<R extends CrudRepository, E extends Entity>
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+public abstract class AbstractEntityServiceImpl<R extends CrudRepository, E extends Entity>
         implements EntityService<E> {
 
     @Autowired
@@ -77,6 +78,12 @@ public abstract class AbstractEntityService<R extends CrudRepository, E extends 
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("id cannot be null");
         }
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public void deleteAll() {
+        repository.deleteAll();
     }
 
     public R getRepository() {

@@ -11,5 +11,6 @@ public interface EntityService<E extends Entity> {
     E get(Long id);
     E update(Long id, E entity);
     void delete(Long id);
+    void deleteAll();
 
 }
