@@ -1,28 +1,23 @@
-package app.estat.web.contoller;
+package app.estat.web.contoller.service;
 
 import app.estat.web.Application;
+import app.estat.web.contoller.Utils;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.service.CowService;
-import app.estat.web.service.CowServiceImpl;
 
-import com.sun.javaws.Main;
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import static org.junit.Assert.*;
 
@@ -32,13 +27,6 @@ public class CowServiceTest {
 
     @Autowired
     private CowService cowService;
-
-    private static final Logger LOG = Logger.getLogger(CowServiceTest.class.getCanonicalName());
-    
-    @BeforeClass
-    public static void setUpBeforeClass() {
-        LOG.severe("CowServiceTest started");
-    }
 
     @Test
     public void testSaveCow() throws IllegalAccessException, ParseException {
@@ -74,24 +62,77 @@ public class CowServiceTest {
     }
 
     @Test
-    public void testGetAllCows() throws ParseException {
+    public void testGetAllCows() throws ParseException, IllegalAccessException {
         List<Cow> cows = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            cows.add(cowService.save(getSimpleCow()));
-            cows.add(cowService.save(getEmptyCow()));
+        for (int i = 0; i <= 18; i += 2) {
+            cows.add(i, cowService.save(getSimpleCow()));
+            cows.add(i + 1, cowService.save(getEmptyCow()));
         }
 
-        assertEquals(20, cowService.getAll().size());
+        List<Cow> readedCows = cowService.getAll();
+
+        assertEquals(20, readedCows.size());
+
+        for (int i = 0; i <= 18; i += 2) {
+            Utils.assertPropertiesEquals(cows.get(i), readedCows.get(i), Cow.class);
+            Utils.assertPropertiesEquals(cows.get(i + 1), readedCows.get(i + 1), Cow.class);
+        }
+    }
+
+    @Test
+    public void testUpdateCow() throws ParseException, IllegalAccessException {
+        List<Cow> cows = new ArrayList<>();
+        cows.add(0, getSimpleCow());
+        cows.add(1, getEmptyCow());
+
+        for (int i = 0; i < 2; i++) {
+            Cow savedCow = cowService.save(cows.get(i));
+            Cow readedCow = cowService.get(savedCow.getId());
+
+            assertTrue(Utils.assertPropertiesEquals(savedCow, readedCow, Cow.class));
+
+            cows.get(i).setName("COW_NAME");
+
+            Cow updatedCow = cowService.update(savedCow.getId(), cows.get(i));
+            readedCow = cowService.get(savedCow.getId());
+
+            assertTrue(Utils.assertPropertiesEquals(savedCow, readedCow, Cow.class));
+            assertTrue(updatedCow.getName().equals("COW_NAME") && readedCow.getName().equals("COW_NAME"));
+        }
+    }
+
+    @Test
+    public void testDeleteCow() throws ParseException {
+        Cow savedCow = cowService.save(getSimpleCow());
+
+        assertEquals(1, cowService.getAll().size());
+
+        cowService.delete(savedCow.getId());
+
+        assertEquals(0, cowService.getAll().size());
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testDeleteCowWithNullIdException() {
+        cowService.delete(null);
+    }
+
+    @Test
+    public void testDeleteAllCows() {
+        for (int i = 0; i < 5; i++) {
+            cowService.save(getEmptyCow());
+        }
+
+        assertEquals(5, cowService.getAll().size());
+
+        cowService.deleteAll();
+
+        assertEquals(0, cowService.getAll().size());
     }
 
     @After
     public void tearDown() {
         cowService.deleteAll();
-    }
-
-    @AfterClass
-    public static void tearDownAfterClass() {
-        LOG.severe("CowServiceTest completed");
     }
 
     private Cow getSimpleCow() throws ParseException {
