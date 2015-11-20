@@ -3,7 +3,6 @@ package app.estat.web.controller;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.model.request.CowRequest;
 import app.estat.web.model.response.CowResponse;
-
 import app.estat.web.model.response.Response;
 import app.estat.web.service.CowService;
 
