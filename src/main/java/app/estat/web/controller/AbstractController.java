@@ -28,6 +28,10 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
 
     private Response response;
 
+    public void setEntityService(EntityService<E> entityService) {
+        this.entityService = entityService;
+    }
+
     @PostConstruct
     private void init() {
         response = new Response();
@@ -77,16 +81,8 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
         return entityService;
     }
 
-    protected EntityMapper<E, R, R1> getEntityMapper() {
-        return entityMapper;
-    }
-
     protected Response getResponse() {
         return response;
-    }
-
-    public void setEntityService(EntityService<E> entityService) {
-        this.entityService = entityService;
     }
 
 }

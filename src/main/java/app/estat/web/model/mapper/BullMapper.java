@@ -3,6 +3,7 @@ package app.estat.web.model.mapper;
 import app.estat.web.model.entity.Bull;
 import app.estat.web.model.request.BullRequest;
 import app.estat.web.model.response.BullResponse;
+
 import org.springframework.stereotype.Component;
 
 @Component

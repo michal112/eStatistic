@@ -86,10 +86,6 @@ public abstract class AbstractEntityServiceImpl<R extends CrudRepository, E exte
         repository.deleteAll();
     }
 
-    public R getRepository() {
-        return repository;
-    }
-
     private class NullAwareBeanUtilsBean extends BeanUtilsBean {
         @Override
         public void copyProperty(Object bean, String name, Object value)

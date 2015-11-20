@@ -1,6 +1,7 @@
 package app.estat.web.model.request;
 
 import app.estat.web.model.entity.Cow;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
