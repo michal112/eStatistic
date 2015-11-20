@@ -6,12 +6,15 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractEntityService<R extends CrudRepository, E extends Entity>
+@Transactional(propagation = Propagation.REQUIRED, readOnly = true)
+public abstract class AbstractEntityServiceImpl<R extends CrudRepository, E extends Entity>
         implements EntityService<E> {
 
     @Autowired
@@ -19,6 +22,7 @@ public abstract class AbstractEntityService<R extends CrudRepository, E extends 
 
     @Override
     @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public E save(E entity) {
         return (E) repository.save(entity);
     }
@@ -51,6 +55,7 @@ public abstract class AbstractEntityService<R extends CrudRepository, E extends 
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public E update(Long id, E entity) {
         E dest = get(id);
 
@@ -66,6 +71,7 @@ public abstract class AbstractEntityService<R extends CrudRepository, E extends 
 
     @Override
     @SuppressWarnings("unchecked")
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void delete(Long id) {
         try {
             repository.delete(id);
@@ -74,7 +80,13 @@ public abstract class AbstractEntityService<R extends CrudRepository, E extends 
         }
     }
 
-    protected R getRepository() {
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
+    public R getRepository() {
         return repository;
     }
 
