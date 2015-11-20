@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractController<E extends Entity, R extends EntityRequest, R1 extends EntityResponse> {
 
-    @Autowired
     private EntityService<E> entityService;
 
     @Autowired
@@ -29,12 +28,17 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
 
     private Response response;
 
+    public void setEntityService(EntityService<E> entityService) {
+        this.entityService = entityService;
+    }
+
     @PostConstruct
     private void init() {
         response = new Response();
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @SuppressWarnings("unchecked")
     public Response save(@RequestBody Request<R> request) {
         response.setResponseContent(entityMapper.mapEntityToResponse(
                 entityService.save(entityMapper.mapRequestToEntity(request.getRequestContent()))));
@@ -75,10 +79,6 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
 
     protected EntityService<E> getEntityService() {
         return entityService;
-    }
-
-    protected EntityMapper<E, R, R1> getEntityMapper() {
-        return entityMapper;
     }
 
     protected Response getResponse() {

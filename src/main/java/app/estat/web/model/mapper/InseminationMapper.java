@@ -4,6 +4,7 @@ import app.estat.web.model.entity.Bull;
 import app.estat.web.model.entity.Insemination;
 import app.estat.web.model.request.InseminationRequest;
 import app.estat.web.model.response.InseminationResponse;
+
 import org.springframework.stereotype.Component;
 
 @Component
