@@ -19,7 +19,7 @@ import javax.annotation.PostConstruct;
 
 import java.util.stream.Collectors;
 
-public abstract class AbstractEntityController<E extends Entity, R extends EntityRequest, R1 extends EntityResponse>
+public abstract class AbstractEntityControllerImpl<E extends Entity, R extends EntityRequest, R1 extends EntityResponse>
         implements EntityController<R> {
 
     private EntityService<E> entityService;

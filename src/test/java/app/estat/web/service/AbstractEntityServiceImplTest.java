@@ -1,9 +1,8 @@
-package app.estat.web.contoller.service;
+package app.estat.web.service;
 
 import app.estat.web.Application;
-import app.estat.web.contoller.Utils;
+import app.estat.web.Utils;
 import app.estat.web.model.entity.Entity;
-import app.estat.web.service.EntityService;
 
 import org.junit.After;
 import org.junit.Test;

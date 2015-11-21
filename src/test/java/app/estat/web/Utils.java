@@ -1,4 +1,4 @@
-package app.estat.web.contoller;
+package app.estat.web;
 
 import java.lang.reflect.Field;
 

@@ -1,7 +1,6 @@
-package app.estat.web.contoller.service;
+package app.estat.web.service;
 
 import app.estat.web.model.entity.CowParent;
-import app.estat.web.service.CowParentService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
