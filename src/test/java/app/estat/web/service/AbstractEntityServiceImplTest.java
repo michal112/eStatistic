@@ -25,7 +25,7 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
 
     private Class<E> clazz;
 
-    private EntityService<E> entityService;
+    protected EntityService<E> entityService;
 
     public void setClazz(Class<E> clazz) {
         this.clazz = clazz;
@@ -43,9 +43,9 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
 
         for (E entity : entities) {
             E savedEntity = entityService.save(entity);
-            E readedEntity = entityService.get(savedEntity.getId());
+            E readEntity = entityService.get(savedEntity.getId());
 
-            assertTrue(Utils.assertPropertiesEquals(savedEntity, readedEntity, clazz));
+            assertTrue(Utils.assertPropertiesEquals(savedEntity, readEntity, clazz));
         }
     }
 
@@ -54,8 +54,8 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
         E savedEntity = entityService.save(getSimpleEntity());
         assertTrue(savedEntity.getId() != null);
 
-        E readedEntity = entityService.get(savedEntity.getId());
-        assertTrue(Utils.assertPropertiesEquals(savedEntity, readedEntity, clazz));
+        E readEntity = entityService.get(savedEntity.getId());
+        assertTrue(Utils.assertPropertiesEquals(savedEntity, readEntity, clazz));
     }
 
     @Test(expected = RuntimeException.class)
@@ -76,13 +76,13 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
             entities.add(i + 1, entityService.save(getEmptyEntity()));
         }
 
-        List<E> readedEntities = entityService.getAll();
+        List<E> readEntities = entityService.getAll();
 
-        assertEquals(20, readedEntities.size());
+        assertEquals(20, readEntities.size());
 
         for (int i = 0; i <= 18; i += 2) {
-            Utils.assertPropertiesEquals(entities.get(i), readedEntities.get(i), clazz);
-            Utils.assertPropertiesEquals(entities.get(i + 1), readedEntities.get(i + 1), clazz);
+            Utils.assertPropertiesEquals(entities.get(i), readEntities.get(i), clazz);
+            Utils.assertPropertiesEquals(entities.get(i + 1), readEntities.get(i + 1), clazz);
         }
     }
 
@@ -94,9 +94,9 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
 
         for (int i = 0; i < 2; i++) {
             E savedEntity = entityService.save(entities.get(i));
-            E readedEntity = entityService.get(savedEntity.getId());
+            E readEntity = entityService.get(savedEntity.getId());
 
-            assertTrue(Utils.assertPropertiesEquals(savedEntity, readedEntity, clazz));
+            assertTrue(Utils.assertPropertiesEquals(savedEntity, readEntity, clazz));
 
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.getType().equals(String.class)) {
@@ -106,15 +106,15 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
             }
 
             E updatedEntity = entityService.update(savedEntity.getId(), entities.get(i));
-            readedEntity = entityService.get(savedEntity.getId());
+            readEntity = entityService.get(savedEntity.getId());
 
-            assertTrue(Utils.assertPropertiesEquals(updatedEntity, readedEntity, clazz));
+            assertTrue(Utils.assertPropertiesEquals(updatedEntity, readEntity, clazz));
 
             for (Field field : clazz.getDeclaredFields()) {
                 if (field.getType().equals(String.class)) {
                     field.setAccessible(true);
                     assertEquals("SIMPLE_VALUE", field.get(updatedEntity));
-                    assertEquals("SIMPLE_VALUE", field.get(readedEntity));
+                    assertEquals("SIMPLE_VALUE", field.get(readEntity));
                 }
             }
         }

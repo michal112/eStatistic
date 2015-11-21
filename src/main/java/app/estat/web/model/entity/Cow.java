@@ -28,7 +28,7 @@ public class Cow implements app.estat.web.model.entity.Entity {
     @Column(name = Application.Constant.COLUMN_BIRTH)
     private Date birth;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = CowParent.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = CowParent.class)
     @JoinColumn(name = Application.Constant.COLUMN_COW_PARENT)
     private CowParent parent;
 
