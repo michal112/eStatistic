@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/rest/inseminations")
-public class InseminationController extends AbstractController<Insemination,
+public class InseminationController extends AbstractEntityController<Insemination,
         InseminationRequest, InseminationResponse> {
 
     @Autowired

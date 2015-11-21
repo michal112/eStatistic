@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/rest/cows")
-public class CowController extends AbstractController<Cow, CowRequest, CowResponse> {
+public class CowController extends AbstractEntityController<Cow, CowRequest, CowResponse> {
 
     @Autowired
     public void setEntityService(CowService cowService) {

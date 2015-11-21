@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/rest/bulls")
-public class BullController extends AbstractController<Bull, BullRequest, BullResponse> {
+public class BullController extends AbstractEntityController<Bull, BullRequest, BullResponse> {
 
     @Autowired
     public void setEntityService(BullService bullService) {

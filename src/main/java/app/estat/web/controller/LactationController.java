@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/rest/lactations")
-public class LactationController extends AbstractController<Lactation, LactationRequest, LactationResponse> {
+public class LactationController extends AbstractEntityController<Lactation, LactationRequest, LactationResponse> {
 
     @Autowired
     public void setEntityService(LactationService lactationService) {
