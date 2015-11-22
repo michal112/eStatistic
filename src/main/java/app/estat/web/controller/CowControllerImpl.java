@@ -24,10 +24,10 @@ public class CowControllerImpl extends AbstractEntityControllerImpl<Cow, CowRequ
             method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response setCowParent(@PathVariable(value = "cowId") Long cowId,
                                  @PathVariable(value = "cowParentId") Long cowParentId) {
-        ((CowService) getEntityService()).setCowParent(cowId, cowParentId);
+        ((CowService) entityService).setCowParent(cowId, cowParentId);
 
-        getResponse().setResponseContent("Cow assigned to desired parent");
-        return getResponse();
+        response.setResponseContent("Cow assigned to desired parent");
+        return response;
     }
 
 }

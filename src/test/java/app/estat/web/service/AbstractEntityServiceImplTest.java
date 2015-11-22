@@ -151,7 +151,7 @@ public abstract class AbstractEntityServiceImplTest<E extends Entity> {
 
     @After
     public void tearDown() {
-        entityService.getRepository().deleteAll();
+        entityService.deleteAll();
     }
 
     protected abstract E getSimpleEntity() throws ParseException;

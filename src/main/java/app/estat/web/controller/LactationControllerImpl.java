@@ -28,10 +28,10 @@ public class LactationControllerImpl extends AbstractEntityControllerImpl<Lactat
             method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response setLactationCow(@PathVariable(value = "lactationId") Long lactationId,
                                     @PathVariable(value = "cowId") Long cowId) {
-        ((LactationService) getEntityService()).setLactationCow(lactationId, cowId);
+        ((LactationService) entityService).setLactationCow(lactationId, cowId);
 
-        getResponse().setResponseContent("Lactation assigned to desired cow");
-        return getResponse();
+        response.setResponseContent("Lactation assigned to desired cow");
+        return response;
     }
 
 }

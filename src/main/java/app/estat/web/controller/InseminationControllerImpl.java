@@ -28,10 +28,10 @@ public class InseminationControllerImpl extends AbstractEntityControllerImpl<Ins
             method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response setInseminationCow(@PathVariable(value = "inseminationId") Long inseminationId,
                                        @PathVariable(value = "cowId") Long cowId) {
-        ((InseminationService) getEntityService()).setInseminationCow(inseminationId, cowId);
+        ((InseminationService) entityService).setInseminationCow(inseminationId, cowId);
 
-        getResponse().setResponseContent("Insemination assigned to desired cow");
-        return getResponse();
+        response.setResponseContent("Insemination assigned to desired cow");
+        return response;
     }
 
     @Override
@@ -39,10 +39,10 @@ public class InseminationControllerImpl extends AbstractEntityControllerImpl<Ins
             method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response setInseminationBull(@PathVariable(value = "inseminationId") Long inseminationId,
                                         @PathVariable(value = "bullId") Long bullId) {
-        ((InseminationService) getEntityService()).setInseminationBull(inseminationId, bullId);
+        ((InseminationService) entityService).setInseminationBull(inseminationId, bullId);
 
-        getResponse().setResponseContent("Insemination assigned to desired bull");
-        return getResponse();
+        response.setResponseContent("Insemination assigned to desired bull");
+        return response;
     }
 
 }

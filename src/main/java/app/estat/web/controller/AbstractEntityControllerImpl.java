@@ -22,14 +22,14 @@ import java.util.stream.Collectors;
 public abstract class AbstractEntityControllerImpl<E extends Entity, R extends EntityRequest, R1 extends EntityResponse>
         implements EntityController<R> {
 
-    private EntityService<E> entityService;
+    protected EntityService<E> entityService;
 
     @Autowired
-    private EntityMapper<E, R, R1> entityMapper;
+    protected EntityMapper<E, R, R1> entityMapper;
 
-    private Response response;
+    protected Response response;
 
-    public void setEntityService(EntityService<E> entityService) {
+    protected void setEntityService(EntityService<E> entityService) {
         this.entityService = entityService;
     }
 
@@ -79,14 +79,6 @@ public abstract class AbstractEntityControllerImpl<E extends Entity, R extends E
         entityService.delete(id);
 
         response.setResponseContent("Entity successfully deleted");
-        return response;
-    }
-
-    protected EntityService<E> getEntityService() {
-        return entityService;
-    }
-
-    protected Response getResponse() {
         return response;
     }
 

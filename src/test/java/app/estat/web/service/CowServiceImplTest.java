@@ -1,15 +1,17 @@
 package app.estat.web.service;
 
 import app.estat.web.model.entity.Cow;
-
 import app.estat.web.model.entity.CowParent;
+
 import org.junit.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -51,17 +53,18 @@ public class CowServiceImplTest extends AbstractEntityServiceImplTest<Cow> {
 
     @Test
     public void testSetCowParent() throws ParseException {
+
         Cow savedCow = entityService.save(getSimpleEntity());
         CowParent savedCowParent = cowParentService.save(new CowParent());
-
+        List<Cow> c = cowParentService.get(3L).getChildren();
         ((CowService) entityService).setCowParent(savedCow.getId(), savedCowParent.getId());
+
+        List<Cow> children = cowParentService.getCowParentChildren(savedCowParent.getId());
+        assertEquals(1, children.size());
+        assertEquals(savedCow.getId(), children.get(0).getId());
 
         Cow readCow = entityService.get(savedCow.getId());
         assertEquals(savedCowParent.getId(), readCow.getParent().getId());
-
-        CowParent readCowParent = cowParentService.get(savedCowParent.getId());
-        assertEquals(1, readCowParent.getChildren().size());
-        assertEquals(savedCow.getId(), readCowParent.getChildren().get(0).getId());
     }
 
 }
