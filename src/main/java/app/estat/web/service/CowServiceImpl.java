@@ -36,6 +36,13 @@ public class CowServiceImpl extends AbstractEntityServiceImpl<CowRepository, Cow
     }
 
     @Override
+    public CowParent getCowParent(Long cowId) {
+        Cow cow = get(cowId);
+
+        return cow.getParent();
+    }
+
+    @Override
     public List<Lactation> getCowLactations(Long cowId) {
         Cow cow = get(cowId);
 
