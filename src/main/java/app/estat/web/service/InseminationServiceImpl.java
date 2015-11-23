@@ -34,6 +34,13 @@ public class InseminationServiceImpl extends AbstractEntityServiceImpl<Inseminat
     }
 
     @Override
+    public Cow getInseminationCow(Long inseminationId) {
+        Insemination insemination = get(inseminationId);
+
+        return insemination.getCow();
+    }
+
+    @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void setInseminationBull(Long inseminationId, Long bullId) {
         Insemination insemination = get(inseminationId);
@@ -44,6 +51,13 @@ public class InseminationServiceImpl extends AbstractEntityServiceImpl<Inseminat
 
         save(insemination);
         bullService.save(bull);
+    }
+
+    @Override
+    public Bull getInseminationBull(Long inseminationId) {
+        Insemination insemination = get(inseminationId);
+
+        return insemination.getBull();
     }
 
 }
