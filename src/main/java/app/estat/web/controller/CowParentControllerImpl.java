@@ -26,17 +26,17 @@ public class CowParentControllerImpl extends AbstractEntityControllerImpl<CowPar
         implements CowParentController {
 
     @Autowired
-    EntityMapper<Cow, CowRequest, CowResponse> cowMapper;
+    private EntityMapper<Cow, CowRequest, CowResponse> cowMapper;
 
     @Autowired
     public void setEntityService(CowParentService cowParentService) {
         super.setEntityService(cowParentService);
     }
 
-    @RequestMapping(value = "/{id}/{id2}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public Response get(@PathVariable(value = "id") Long id, @PathVariable(value = "id2") Long id2) {
-        List<Cow> c = ((CowParentService) entityService).getCowParentChildren(id);
-        response.setResponseContent(((CowParentService) entityService).getCowParentChildren(id).stream()
+    @Override
+    @RequestMapping(value = "/{idCowParent}/children", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Response getCowParentChildren(@PathVariable(value = "idCowParent") Long cowParentId) {
+        response.setResponseContent(((CowParentService) entityService).getCowParentChildren(cowParentId).stream()
                 .map(cowMapper::mapEntityToResponse).collect(Collectors.toList()));
 
         return response;

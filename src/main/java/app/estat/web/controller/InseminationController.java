@@ -7,5 +7,7 @@ public interface InseminationController extends EntityController<InseminationReq
 
     Response setInseminationCow(Long inseminationId,  Long cowId);
     Response setInseminationBull(Long inseminationId, Long bullId);
+    Response getInseminationCow(Long inseminationId);
+    Response getInseminationBull(Long inseminationId);
 
 }
