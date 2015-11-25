@@ -1,6 +1,6 @@
 package app.estat.web.service;
 
-import app.estat.web.Utils;
+import app.estat.web.util.Util;
 import app.estat.web.model.entity.Bull;
 import app.estat.web.model.entity.Insemination;
 
@@ -55,7 +55,7 @@ public class BullServiceImplTest extends AbstractEntityServiceImplTest<Bull> {
         List<Insemination> inseminations = ((BullService) entityService).getBullInseminations(bull.getId());
 
         assertEquals(1, inseminations.size());
-        assertTrue(Utils.assertPropertiesEquals(inseminationService.get(insemination.getId()),
+        assertTrue(Util.assertPropertiesEquals(inseminationService.get(insemination.getId()),
                 inseminations.get(0), Insemination.class));
 
         inseminationService.deleteAll();

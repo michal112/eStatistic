@@ -1,6 +1,6 @@
 package app.estat.web.service;
 
-import app.estat.web.Utils;
+import app.estat.web.util.Util;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.model.entity.CowParent;
 
@@ -55,7 +55,7 @@ public class CowParentServiceImplTest extends AbstractEntityServiceImplTest<CowP
         List<Cow> cows = ((CowParentService) entityService).getCowParentChildren(cowParent.getId());
 
         assertEquals(1, cows.size());
-        assertTrue(Utils.assertPropertiesEquals(cowService.get(cow.getId()), cows.get(0), Cow.class));
+        assertTrue(Util.assertPropertiesEquals(cowService.get(cow.getId()), cows.get(0), Cow.class));
 
         cowService.deleteAll();
     }

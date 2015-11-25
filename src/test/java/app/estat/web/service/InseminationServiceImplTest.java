@@ -1,6 +1,6 @@
 package app.estat.web.service;
 
-import app.estat.web.Utils;
+import app.estat.web.util.Util;
 import app.estat.web.model.entity.Bull;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.model.entity.Insemination;
@@ -69,11 +69,11 @@ public class InseminationServiceImplTest extends AbstractEntityServiceImplTest<I
         inseminations.add(3, entityService.get(inseminations.get(1).getId()));
 
         assertEquals(2, cowInseminations.size());
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(2), cowInseminations.get(0), Insemination.class));
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(3), cowInseminations.get(1), Insemination.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(2), cowInseminations.get(0), Insemination.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(3), cowInseminations.get(1), Insemination.class));
 
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(2).getCow(), savedCow, Cow.class));
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(3).getCow(), savedCow, Cow.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(2).getCow(), savedCow, Cow.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(3).getCow(), savedCow, Cow.class));
 
         entityService.deleteAll();
         cowService.deleteAll();
@@ -88,7 +88,7 @@ public class InseminationServiceImplTest extends AbstractEntityServiceImplTest<I
 
         ((InseminationService) entityService).setInseminationCow(insemination.getId(), cow.getId());
 
-        assertTrue(Utils.assertPropertiesEquals(((InseminationService) entityService).getInseminationCow(insemination.getId()),
+        assertTrue(Util.assertPropertiesEquals(((InseminationService) entityService).getInseminationCow(insemination.getId()),
                 cowService.get(cow.getId()), Cow.class));
 
         entityService.deleteAll();
@@ -111,11 +111,11 @@ public class InseminationServiceImplTest extends AbstractEntityServiceImplTest<I
         inseminations.add(3, entityService.get(inseminations.get(1).getId()));
 
         assertEquals(2, bullInseminations.size());
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(2), bullInseminations.get(0), Insemination.class));
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(3), bullInseminations.get(1), Insemination.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(2), bullInseminations.get(0), Insemination.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(3), bullInseminations.get(1), Insemination.class));
 
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(2).getBull(), savedBull, Bull.class));
-        assertTrue(Utils.assertPropertiesEquals(inseminations.get(3).getBull(), savedBull, Bull.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(2).getBull(), savedBull, Bull.class));
+        assertTrue(Util.assertPropertiesEquals(inseminations.get(3).getBull(), savedBull, Bull.class));
 
         entityService.deleteAll();
         bullService.deleteAll();
@@ -130,7 +130,7 @@ public class InseminationServiceImplTest extends AbstractEntityServiceImplTest<I
 
         ((InseminationService) entityService).setInseminationBull(insemination.getId(), bull.getId());
 
-        assertTrue(Utils.assertPropertiesEquals(((InseminationService) entityService).getInseminationBull(insemination.getId()),
+        assertTrue(Util.assertPropertiesEquals(((InseminationService) entityService).getInseminationBull(insemination.getId()),
                 bullService.get(bull.getId()), Bull.class));
 
         entityService.deleteAll();

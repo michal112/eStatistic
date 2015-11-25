@@ -1,6 +1,6 @@
 package app.estat.web.service;
 
-import app.estat.web.Utils;
+import app.estat.web.util.Util;
 import app.estat.web.model.entity.Cow;
 import app.estat.web.model.entity.CowParent;
 import app.estat.web.model.entity.Insemination;
@@ -77,11 +77,11 @@ public class CowServiceImplTest extends AbstractEntityServiceImplTest<Cow> {
         cows.add(3, entityService.get(cows.get(1).getId()));
 
         assertEquals(2, children.size());
-        assertTrue(Utils.assertPropertiesEquals(cows.get(2), children.get(0), Cow.class));
-        assertTrue(Utils.assertPropertiesEquals(cows.get(3), children.get(1), Cow.class));
+        assertTrue(Util.assertPropertiesEquals(cows.get(2), children.get(0), Cow.class));
+        assertTrue(Util.assertPropertiesEquals(cows.get(3), children.get(1), Cow.class));
 
-        assertTrue(Utils.assertPropertiesEquals(cows.get(2).getParent(), savedCowParent, CowParent.class));
-        assertTrue(Utils.assertPropertiesEquals(cows.get(3).getParent(), savedCowParent, CowParent.class));
+        assertTrue(Util.assertPropertiesEquals(cows.get(2).getParent(), savedCowParent, CowParent.class));
+        assertTrue(Util.assertPropertiesEquals(cows.get(3).getParent(), savedCowParent, CowParent.class));
 
         entityService.deleteAll();
         cowParentService.deleteAll();
@@ -96,7 +96,7 @@ public class CowServiceImplTest extends AbstractEntityServiceImplTest<Cow> {
 
         ((CowService) entityService).setCowParent(cow.getId(), cowParent.getId());
 
-        assertTrue(Utils.assertPropertiesEquals(((CowService) entityService).getCowParent(cow.getId()),
+        assertTrue(Util.assertPropertiesEquals(((CowService) entityService).getCowParent(cow.getId()),
                 cowParentService.get(cowParent.getId()), CowParent.class));
 
         entityService.deleteAll();
@@ -113,7 +113,7 @@ public class CowServiceImplTest extends AbstractEntityServiceImplTest<Cow> {
         List<Lactation> lactations = ((CowService) entityService).getCowLactations(cow.getId());
 
         assertEquals(1, lactations.size());
-        assertTrue(Utils.assertPropertiesEquals(lactationService.get(lactation.getId()), lactations.get(0), Lactation.class));
+        assertTrue(Util.assertPropertiesEquals(lactationService.get(lactation.getId()), lactations.get(0), Lactation.class));
 
         lactationService.deleteAll();
     }
@@ -128,7 +128,7 @@ public class CowServiceImplTest extends AbstractEntityServiceImplTest<Cow> {
         List<Insemination> inseminations = ((CowService) entityService).getCowInseminations(cow.getId());
 
         assertEquals(1, inseminations.size());
-        assertTrue(Utils.assertPropertiesEquals(inseminationService.get(insemination.getId()), inseminations.get(0), Insemination.class));
+        assertTrue(Util.assertPropertiesEquals(inseminationService.get(insemination.getId()), inseminations.get(0), Insemination.class));
 
         inseminationService.deleteAll();
     }

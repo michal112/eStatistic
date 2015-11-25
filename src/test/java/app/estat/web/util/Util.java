@@ -1,4 +1,4 @@
-package app.estat.web;
+package app.estat.web.util;
 
 import app.estat.web.model.entity.Entity;
 
@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Utils {
+public class Util {
 
     public static Boolean assertPropertiesEquals(Object o1, Object o2, Class clazz) throws IllegalAccessException {
         for (Field field : clazz.getDeclaredFields()) {
@@ -38,7 +38,7 @@ public class Utils {
         return true;
     }
 
-    private static String formatDate(Date date) {
+    public static String formatDate(Date date) {
         return new SimpleDateFormat("yyyy-mm-dd").format(date);
     }
 
