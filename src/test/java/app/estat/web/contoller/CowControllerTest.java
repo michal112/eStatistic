@@ -7,6 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class CowControllerTest extends AbstactEntityControllerTest<CowRequest> {
 
+    public CowControllerTest() {
+        super(urlPrefix);
+    }
+
     @Autowired
     public void setEntityController(CowController cowController) {
         super.setEntityController(cowController);
