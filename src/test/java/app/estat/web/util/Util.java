@@ -2,10 +2,13 @@ package app.estat.web.util;
 
 import app.estat.web.model.entity.Entity;
 
+import app.estat.web.model.response.Response;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
-
 import java.text.SimpleDateFormat;
-
 import java.util.Date;
 import java.util.List;
 
@@ -39,7 +42,19 @@ public class Util {
     }
 
     public static String formatDate(Date date) {
-        return new SimpleDateFormat("yyyy-mm-dd").format(date);
+        return new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
+
+    public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper.writeValueAsBytes(object);
+    }
+
+    public static Response convertJsonStringToResponse(String jsonString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Response response = mapper.readValue(jsonString, Response.class);
+        return response;
     }
 
 }
