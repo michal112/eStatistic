@@ -2,20 +2,20 @@ package app.estat.web.contoller;
 
 import app.estat.web.controller.CowController;
 import app.estat.web.model.entity.Cow;
+import app.estat.web.model.repository.CowRepository;
 import app.estat.web.model.request.CowRequest;
-
 import app.estat.web.util.Util;
+
 import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultHandler;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import java.io.IOException;
+import javax.annotation.PostConstruct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Map;
 
 import static org.hamcrest.core.Is.is;
@@ -26,11 +26,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class CowControllerTest extends AbstactEntityControllerTest<CowRequest> {
 
-    private final String url = "/rest/cows";
-
     @Autowired
-    public void setEntityController(CowController cowController) {
-        super.setEntityController(cowController);
+    public void setRepository(CowRepository cowRepository) {
+        super.setRepository(cowRepository);
+    }
+
+    @PostConstruct
+    public void init() {
+        super.setBaseUrl("/rest/cows");
     }
 
     @Override
@@ -61,34 +64,6 @@ public class CowControllerTest extends AbstactEntityControllerTest<CowRequest> {
                 .andExpect(jsonPath("$.response.lastInseminationDate", is(Mockito.isNull())))
                 .andExpect(jsonPath("$.response.lastInseminationBullName", is(Mockito.isNull())))
                 .andExpect(jsonPath("$.response.lastInseminationBullNumber", is(Mockito.isNull())));
-    }
-
-    @Override
-    public void testSaveEntityRequest() throws Exception {
-        request.setRequestContent(getSimpleEntityRequest());
-        ResultActions actions = mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Util.convertObjectToJsonBytes(request)));
-
-        expectSimpleEntityResponse(actions);
-
-    }
-
-    @Override
-    public void testGetEntityRequest() throws Exception {
-        request.setRequestContent(getSimpleEntityRequest());
-        String jsonString = mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Util.convertObjectToJsonBytes(request))).andReturn().getResponse().getContentAsString();
-        Map map = ((Map) Util.convertJsonStringToResponse(jsonString).getResponseContent());
-
-        for (Object key : map.keySet()) {
-            if (key.equals("id")) {
-
-            }
-        }
-
-        ResultActions actions = mvc.perform(get(url + "/" + cow.getId()).accept(MediaType.APPLICATION_JSON_VALUE));
-
-        expectSimpleEntityResponse(actions);
     }
 
 }
