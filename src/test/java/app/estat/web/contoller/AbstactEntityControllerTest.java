@@ -1,11 +1,10 @@
 package app.estat.web.contoller;
 
 import app.estat.web.Application;
-import app.estat.web.controller.EntityController;
 import app.estat.web.model.request.EntityRequest;
-
 import app.estat.web.model.request.Request;
 import app.estat.web.util.Util;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
@@ -26,8 +26,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Map;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)
@@ -55,7 +58,31 @@ public abstract class AbstactEntityControllerTest<R extends EntityRequest> {
 
     protected abstract R getSimpleEntityRequest() throws ParseException;
 
-    protected abstract void expectSimpleEntityResponse(ResultActions actions) throws Exception;
+    protected abstract R getUpdatedSimpleEntityRequest() throws ParseException;
+
+    protected abstract void expectSimpleEntityResponse(ResultActions actions, int numberOfEntitiesInResponse) throws Exception;
+
+    protected abstract void expectUpdatedSimpleEntityResponse(ResultActions actions) throws Exception;
+
+    private Integer saveSimpleEntity() throws Exception {
+        request.setRequestContent(getSimpleEntityRequest());
+        String jsonString = mvc.perform(post(baseUrl).contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Util.convertObjectToJsonBytes(request))).andReturn().getResponse().getContentAsString();
+
+        return getIdFromActionString(jsonString);
+    }
+
+    private Integer getIdFromActionString(String jsonString) throws IOException {
+        Map map = ((Map) Util.convertJsonStringToResponse(jsonString).getResponseContent());
+
+        for (Object key : map.keySet()) {
+            if (key.equals("id")) {
+                return (Integer) map.get(key);
+            }
+        }
+
+        return null;
+    }
 
     @Before
     public void setUp() {
@@ -69,39 +96,51 @@ public abstract class AbstactEntityControllerTest<R extends EntityRequest> {
         ResultActions actions = mvc.perform(post(baseUrl).contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Util.convertObjectToJsonBytes(request)));
 
-        expectSimpleEntityResponse(actions);
+        expectSimpleEntityResponse(actions, 1);
     }
 
     @Test
     public void testGetEntityRequest() throws Exception {
-        request.setRequestContent(getSimpleEntityRequest());
-        String jsonString = mvc.perform(post(baseUrl).contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(Util.convertObjectToJsonBytes(request))).andReturn().getResponse().getContentAsString();
-        Map map = ((Map) Util.convertJsonStringToResponse(jsonString).getResponseContent());
-
-        int entityId = 0;
-        for (Object key : map.keySet()) {
-            if (key.equals("id")) {
-                entityId = (int) map.get(key);
-            }
-        }
+        Integer entityId = saveSimpleEntity();
 
         ResultActions actions = mvc.perform(get(baseUrl + "/" + entityId).accept(MediaType.APPLICATION_JSON_VALUE));
 
-        expectSimpleEntityResponse(actions);
+        expectSimpleEntityResponse(actions, 1);
     }
 
     @Test
     public void testGetAllEntitiesRequest() throws Exception {
         for (int i = 0; i < 3; i++) {
-            request.setRequestContent(getSimpleEntityRequest());
-            mvc.perform(post(baseUrl).contentType(MediaType.APPLICATION_JSON_VALUE)
-                    .content(Util.convertObjectToJsonBytes(request)));
+            saveSimpleEntity();
         }
 
         ResultActions actions = mvc.perform(get(baseUrl).accept(MediaType.APPLICATION_JSON_VALUE));
 
-        expectSimpleEntityResponse(actions);
+        expectSimpleEntityResponse(actions, 3);
+    }
+
+    @Test
+    public void testUpdateEntity() throws Exception {
+        Integer entityId = saveSimpleEntity();
+
+        request.setRequestContent(getUpdatedSimpleEntityRequest());
+
+        ResultActions actions = mvc.perform(put(baseUrl + "/" + entityId).contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(Util.convertObjectToJsonBytes(request)));
+
+        expectUpdatedSimpleEntityResponse(actions);
+        assertEquals(entityId, getIdFromActionString(actions.andReturn().getResponse().getContentAsString()));
+    }
+
+    @Test
+    public void testDeleteEntity() throws Exception {
+        Integer entityId = saveSimpleEntity();
+
+        ResultActions actions = mvc.perform(delete(baseUrl + "/" + entityId).accept(MediaType.APPLICATION_JSON_VALUE));
+
+        actions.andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.response", is("Entity successfully deleted")));
     }
 
     @After
