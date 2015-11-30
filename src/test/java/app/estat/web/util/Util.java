@@ -2,8 +2,11 @@ package app.estat.web.util;
 
 import app.estat.web.model.entity.Entity;
 
+import app.estat.web.model.response.EntityResponse;
 import app.estat.web.model.response.Response;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -11,6 +14,7 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class Util {
 
@@ -55,6 +59,25 @@ public class Util {
         ObjectMapper mapper = new ObjectMapper();
         Response response = mapper.readValue(jsonString, Response.class);
         return response;
+    }
+
+    public static <T extends EntityResponse> T
+            convertJsonStringContentToEntityResponse(String jsonString, Class<T> clazz) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        T entityResponse = mapper.readValue(jsonString, clazz);
+        return entityResponse;
+    }
+
+    public static String convertObjectToJsonString(Object object) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(object);
+    }
+
+    public static <T extends EntityResponse> T convertJsonStringToEntityResponse(String jsonString, Class<T> clazz) throws IOException {
+        Response response = convertJsonStringToResponse(jsonString);
+        Logger.getAnonymousLogger().severe(convertObjectToJsonString(response));
+        return convertJsonStringContentToEntityResponse(
+                convertObjectToJsonString(response.getResponseContent()), clazz);
     }
 
 }

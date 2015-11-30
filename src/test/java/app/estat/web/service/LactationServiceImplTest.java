@@ -52,25 +52,25 @@ public class LactationServiceImplTest extends AbstractEntityServiceImplTest<Lact
 
     @Test
     public void testSetLactationCow() throws ParseException, IllegalAccessException {
-        List<Lactation> lacatations = new ArrayList<>();
-        lacatations.add(0, entityService.save(getSimpleEntity()));
-        lacatations.add(1, entityService.save(getEmptyEntity()));
+        List<Lactation> lactations = new ArrayList<>();
+        lactations.add(0, entityService.save(getSimpleEntity()));
+        lactations.add(1, entityService.save(getEmptyEntity()));
 
         Cow savedCow = cowService.save(new Cow());
 
-        ((LactationService) entityService).setLactationCow(lacatations.get(0).getId(), savedCow.getId());
-        ((LactationService) entityService).setLactationCow(lacatations.get(1).getId(), savedCow.getId());
+        ((LactationService) entityService).setLactationCow(lactations.get(0).getId(), savedCow.getId());
+        ((LactationService) entityService).setLactationCow(lactations.get(1).getId(), savedCow.getId());
 
         List<Lactation> cowLactations = cowService.getCowLactations(savedCow.getId());
-        lacatations.add(2, entityService.get(lacatations.get(0).getId()));
-        lacatations.add(3, entityService.get(lacatations.get(1).getId()));
+        lactations.add(2, entityService.get(lactations.get(0).getId()));
+        lactations.add(3, entityService.get(lactations.get(1).getId()));
 
         assertEquals(2, cowLactations.size());
-        assertTrue(Util.assertPropertiesEquals(lacatations.get(2), cowLactations.get(0), Lactation.class));
-        assertTrue(Util.assertPropertiesEquals(lacatations.get(3), cowLactations.get(1), Lactation.class));
+        assertTrue(Util.assertPropertiesEquals(lactations.get(2), cowLactations.get(0), Lactation.class));
+        assertTrue(Util.assertPropertiesEquals(lactations.get(3), cowLactations.get(1), Lactation.class));
 
-        assertTrue(Util.assertPropertiesEquals(lacatations.get(2).getCow(), savedCow, Cow.class));
-        assertTrue(Util.assertPropertiesEquals(lacatations.get(3).getCow(), savedCow, Cow.class));
+        assertTrue(Util.assertPropertiesEquals(lactations.get(2).getCow(), savedCow, Cow.class));
+        assertTrue(Util.assertPropertiesEquals(lactations.get(3).getCow(), savedCow, Cow.class));
 
         entityService.deleteAll();
         cowService.deleteAll();

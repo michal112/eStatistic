@@ -41,7 +41,7 @@ public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
 
     protected Request<R> request;
 
-    private CrudRepository repository;
+    protected CrudRepository repository;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
