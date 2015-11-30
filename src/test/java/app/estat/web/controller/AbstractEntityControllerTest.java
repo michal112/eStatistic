@@ -1,4 +1,4 @@
-package app.estat.web.contoller;
+package app.estat.web.controller;
 
 import app.estat.web.Application;
 import app.estat.web.model.request.EntityRequest;
