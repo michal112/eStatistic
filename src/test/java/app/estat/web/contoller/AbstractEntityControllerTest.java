@@ -64,7 +64,7 @@ public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
 
     protected abstract void expectUpdatedSimpleEntityResponse(ResultActions actions) throws Exception;
 
-    private Integer saveSimpleEntity() throws Exception {
+    protected Integer saveSimpleEntity() throws Exception {
         request.setRequestContent(getSimpleEntityRequest());
         String jsonString = mvc.perform(post(baseUrl).contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Util.convertObjectToJsonBytes(request))).andReturn().getResponse().getContentAsString();
@@ -91,7 +91,7 @@ public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
     }
 
     @Test
-    public void testSaveEntityRequest() throws Exception {
+    public void testSaveEntity() throws Exception {
         request.setRequestContent(getSimpleEntityRequest());
         ResultActions actions = mvc.perform(post(baseUrl).contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(Util.convertObjectToJsonBytes(request)));
@@ -100,7 +100,7 @@ public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
     }
 
     @Test
-    public void testGetEntityRequest() throws Exception {
+    public void testGetEntity() throws Exception {
         Integer entityId = saveSimpleEntity();
 
         ResultActions actions = mvc.perform(get(baseUrl + "/" + entityId).accept(MediaType.APPLICATION_JSON_VALUE));
@@ -109,7 +109,7 @@ public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
     }
 
     @Test
-    public void testGetAllEntitiesRequest() throws Exception {
+    public void testGetAllEntities() throws Exception {
         for (int i = 0; i < 3; i++) {
             saveSimpleEntity();
         }
