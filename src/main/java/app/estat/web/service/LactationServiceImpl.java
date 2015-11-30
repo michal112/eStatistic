@@ -29,4 +29,11 @@ public class LactationServiceImpl extends AbstractEntityServiceImpl<LactationRep
         cowService.save(cow);
     }
 
+    @Override
+    public Cow getLactationCow(Long lactationId) {
+        Lactation lactation = get(lactationId);
+
+        return lactation.getCow();
+    }
+
 }

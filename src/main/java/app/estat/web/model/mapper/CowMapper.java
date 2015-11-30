@@ -45,8 +45,13 @@ public class CowMapper implements EntityMapper<Cow, CowRequest, CowResponse> {
         List<Insemination> inseminations = cow.getInseminations();
         if (inseminations != null && !inseminations.isEmpty()) {
             Insemination lastInsemination = getLastObjectFromCollection(inseminations);
-            cowResponse.setLastInseminationBullName(lastInsemination.getBull().getName());
-            cowResponse.setLastInseminationBullNumber(lastInsemination.getBull().getNumber());
+            if (lastInsemination.getBull() != null) {
+                cowResponse.setLastInseminationBullName(lastInsemination.getBull().getName());
+                cowResponse.setLastInseminationBullNumber(lastInsemination.getBull().getNumber());
+            } else {
+                cowResponse.setLastInseminationBullName(null);
+                cowResponse.setLastInseminationBullNumber(null);
+            }
             cowResponse.setLastInseminationDate(lastInsemination.getDate());
         } else {
             cowResponse.setLastInseminationBullName(null);
