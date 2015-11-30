@@ -1,21 +1,10 @@
 package app.estat.web.controller;
 
-import app.estat.web.model.entity.Bull;
 import app.estat.web.model.request.BullRequest;
-import app.estat.web.model.response.BullResponse;
-import app.estat.web.service.BullService;
+import app.estat.web.model.response.Response;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+public interface BullController extends EntityController<BullRequest> {
 
-@RestController
-@RequestMapping(value = "/rest/bulls")
-public class BullController extends AbstractController<Bull, BullRequest, BullResponse> {
-
-    @Autowired
-    public void setEntityService(BullService bullService) {
-        super.setEntityService(bullService);
-    }
+    Response getBullInseminations(Long bullId);
 
 }

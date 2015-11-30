@@ -17,11 +17,11 @@ public class Insemination implements app.estat.web.model.entity.Entity, Comparab
     @Column(name = Application.Constant.COLUMN_DATE)
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Bull.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Bull.class)
     @JoinColumn(name = Application.Constant.COLUMN_INSEMINATION_BULL)
     private Bull bull;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Cow.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Cow.class)
     @JoinColumn(name = Application.Constant.COLUMN_INSEMINATION_COW)
     private Cow cow;
 

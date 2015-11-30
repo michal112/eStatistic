@@ -17,7 +17,7 @@ public class Lactation implements app.estat.web.model.entity.Entity, Comparable<
     @Column(name = Application.Constant.COLUMN_DATE)
     private Date date;
 
-    @ManyToOne(fetch = FetchType.LAZY, targetEntity = Cow.class)
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Cow.class)
     @JoinColumn(name = Application.Constant.COLUMN_LACTATION_COW)
     private Cow cow;
 

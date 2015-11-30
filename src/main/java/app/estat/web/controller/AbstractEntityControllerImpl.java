@@ -19,16 +19,17 @@ import javax.annotation.PostConstruct;
 
 import java.util.stream.Collectors;
 
-public abstract class AbstractController<E extends Entity, R extends EntityRequest, R1 extends EntityResponse> {
+public abstract class AbstractEntityControllerImpl<E extends Entity, R extends EntityRequest, R1 extends EntityResponse>
+        implements EntityController<R> {
 
-    private EntityService<E> entityService;
+    protected EntityService<E> entityService;
 
     @Autowired
-    private EntityMapper<E, R, R1> entityMapper;
+    protected EntityMapper<E, R, R1> entityMapper;
 
-    private Response response;
+    protected Response response;
 
-    public void setEntityService(EntityService<E> entityService) {
+    protected void setEntityService(EntityService<E> entityService) {
         this.entityService = entityService;
     }
 
@@ -37,8 +38,8 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
         response = new Response();
     }
 
+    @Override
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @SuppressWarnings("unchecked")
     public Response save(@RequestBody Request<R> request) {
         response.setResponseContent(entityMapper.mapEntityToResponse(
                 entityService.save(entityMapper.mapRequestToEntity(request.getRequestContent()))));
@@ -46,6 +47,7 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
         return response;
     }
 
+    @Override
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response getAll() {
         response.setResponseContent(entityService.getAll()
@@ -54,6 +56,7 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
         return response;
     }
 
+    @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response get(@PathVariable(value = "id") Long id) {
         response.setResponseContent(entityMapper.mapEntityToResponse(entityService.get(id)));
@@ -61,6 +64,7 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
         return response;
     }
 
+    @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response update(@PathVariable(value = "id") Long id, @RequestBody Request<R> request) {
         response.setResponseContent(entityMapper.mapEntityToResponse(entityService.update(
@@ -69,19 +73,12 @@ public abstract class AbstractController<E extends Entity, R extends EntityReque
         return response;
     }
 
+    @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Response delete(@PathVariable(value = "id") Long id) {
         entityService.delete(id);
 
         response.setResponseContent("Entity successfully deleted");
-        return response;
-    }
-
-    protected EntityService<E> getEntityService() {
-        return entityService;
-    }
-
-    protected Response getResponse() {
         return response;
     }
 
