@@ -14,7 +14,6 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class Util {
 
@@ -75,7 +74,6 @@ public class Util {
 
     public static <T extends EntityResponse> T convertJsonStringToEntityResponse(String jsonString, Class<T> clazz) throws IOException {
         Response response = convertJsonStringToResponse(jsonString);
-        Logger.getAnonymousLogger().severe(convertObjectToJsonString(response));
         return convertJsonStringContentToEntityResponse(
                 convertObjectToJsonString(response.getResponseContent()), clazz);
     }

@@ -38,7 +38,7 @@ public class LactationServiceImplTest extends AbstractEntityServiceImplTest<Lact
         Lactation lactation = new Lactation();
 
         String dateString = "2015-11-18";
-        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(dateString);
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
         lactation.setDate(date);
         lactation.setNumber(1);
 

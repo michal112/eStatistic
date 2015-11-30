@@ -6,6 +6,7 @@ import app.estat.web.model.request.BullRequest;
 import app.estat.web.service.InseminationService;
 
 import org.junit.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -42,8 +43,8 @@ public class BullControllerTest extends AbstractEntityControllerTest<BullRequest
     protected BullRequest getSimpleEntityRequest() throws ParseException {
         BullRequest bullRequest = new BullRequest();
 
-        bullRequest.setName("EGON");
-        bullRequest.setNumber("PL-004614265460");
+        bullRequest.setName("GS EGON");
+        bullRequest.setNumber("AT825717672");
 
         return bullRequest;
     }
@@ -52,8 +53,8 @@ public class BullControllerTest extends AbstractEntityControllerTest<BullRequest
     protected BullRequest getUpdatedSimpleEntityRequest() throws ParseException {
         BullRequest bullRequest = new BullRequest();
 
-        bullRequest.setName("EGON_UPDATED");
-        bullRequest.setNumber("PL-004614265460_UPDATED");
+        bullRequest.setName("GS EGON_UPDATED");
+        bullRequest.setNumber("AT825717672_UPDATED");
 
         return bullRequest;
     }
@@ -62,17 +63,17 @@ public class BullControllerTest extends AbstractEntityControllerTest<BullRequest
     protected void expectSimpleEntityResponse(ResultActions actions, int numberOfEntitiesInResponse) throws Exception {
         if (numberOfEntitiesInResponse == 1) {
             actions.andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(jsonPath("$.response.id", isA(Integer.class)))
-                    .andExpect(jsonPath("$.response.name", is("EGON")))
-                    .andExpect(jsonPath("$.response.number", is("PL-004614265460")));
+                   .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                   .andExpect(jsonPath("$.response.id", isA(Integer.class)))
+                   .andExpect(jsonPath("$.response.name", is("GS EGON")))
+                   .andExpect(jsonPath("$.response.number", is("AT825717672")));
         } else {
             for (int i = 0; i < numberOfEntitiesInResponse; i++) {
                 actions.andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                        .andExpect(jsonPath("$.response[" + i + "].id", isA(Integer.class)))
-                        .andExpect(jsonPath("$.response[" + i + "].name", is("EGON")))
-                        .andExpect(jsonPath("$.response[" + i + "].number", is("PL-004614265460")));
+                       .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                       .andExpect(jsonPath("$.response[" + i + "].id", isA(Integer.class)))
+                       .andExpect(jsonPath("$.response[" + i + "].name", is("GS EGON")))
+                       .andExpect(jsonPath("$.response[" + i + "].number", is("AT825717672")));
             }
         }
     }
@@ -80,10 +81,10 @@ public class BullControllerTest extends AbstractEntityControllerTest<BullRequest
     @Override
     protected void expectUpdatedSimpleEntityResponse(ResultActions actions) throws Exception {
         actions.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.response.id", isA(Integer.class)))
-                .andExpect(jsonPath("$.response.name", is("EGON_UPDATED")))
-                .andExpect(jsonPath("$.response.number", is("PL-004614265460_UPDATED")));
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+               .andExpect(jsonPath("$.response.id", isA(Integer.class)))
+               .andExpect(jsonPath("$.response.name", is("GS EGON_UPDATED")))
+               .andExpect(jsonPath("$.response.number", is("AT825717672_UPDATED")));
     }
 
     @Test
@@ -101,10 +102,11 @@ public class BullControllerTest extends AbstractEntityControllerTest<BullRequest
             inseminationsIds.add(inseminationId);
         }
 
-        ResultActions actions = mvc.perform(MockMvcRequestBuilders.get("/rest/bulls/" + bullId + "/inseminations"));
+        ResultActions actions = mvc.perform(MockMvcRequestBuilders.get("/rest/bulls/" + bullId + "/inseminations"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE));
         for (int i = 0; i < 9;) {
-            actions.andExpect(jsonPath("$.response.[" + i + "].id", is(inseminationsIds.get(i).intValue())))
-                   .andExpect(jsonPath("$.response.[" + i + "].date", is("2015-12-0" + ++i)));
+            actions.andExpect(jsonPath("$.response[" + i + "].id", is(inseminationsIds.get(i).intValue())))
+                   .andExpect(jsonPath("$.response[" + i + "].date", is("2015-12-0" + ++i)));
         }
 
         inseminationService.deleteAll();

@@ -9,7 +9,9 @@ import app.estat.web.service.CowService;
 import app.estat.web.util.Util;
 
 import org.junit.Test;
+
 import org.mockito.Mockito;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -66,17 +68,17 @@ public class LactationControllerTest extends AbstractEntityControllerTest<Lactat
     protected void expectSimpleEntityResponse(ResultActions actions, int numberOfEntitiesInResponse) throws Exception {
         if (numberOfEntitiesInResponse == 1) {
             actions.andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                    .andExpect(jsonPath("$.response.id", isA(Integer.class)))
-                    .andExpect(jsonPath("$.response.number", is(1)))
-                    .andExpect(jsonPath("$.response.date", is("2015-11-27")));
+                   .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                   .andExpect(jsonPath("$.response.id", isA(Integer.class)))
+                   .andExpect(jsonPath("$.response.number", is(1)))
+                   .andExpect(jsonPath("$.response.date", is("2015-11-27")));
         } else {
             for (int i = 0; i < numberOfEntitiesInResponse; i++) {
                 actions.andExpect(MockMvcResultMatchers.status().isOk())
-                        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                        .andExpect(jsonPath("$.response[" + i + "].id", isA(Integer.class)))
-                        .andExpect(jsonPath("$.response[" + i + "].number", is(1)))
-                        .andExpect(jsonPath("$.response[" + i + "].date", is("2015-11-27")));
+                       .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                       .andExpect(jsonPath("$.response[" + i + "].id", isA(Integer.class)))
+                       .andExpect(jsonPath("$.response[" + i + "].number", is(1)))
+                       .andExpect(jsonPath("$.response[" + i + "].date", is("2015-11-27")));
             }
         }
     }
@@ -84,10 +86,10 @@ public class LactationControllerTest extends AbstractEntityControllerTest<Lactat
     @Override
     protected void expectUpdatedSimpleEntityResponse(ResultActions actions) throws Exception {
         actions.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.response.id", isA(Integer.class)))
-                .andExpect(jsonPath("$.response.number", is(2)))
-                .andExpect(jsonPath("$.response.date", is("2015-11-28")));
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+               .andExpect(jsonPath("$.response.id", isA(Integer.class)))
+               .andExpect(jsonPath("$.response.number", is(2)))
+               .andExpect(jsonPath("$.response.date", is("2015-11-28")));
     }
 
     private Cow getSimpleCow() throws ParseException {
@@ -110,7 +112,7 @@ public class LactationControllerTest extends AbstractEntityControllerTest<Lactat
 
         Long cowId = cowService.save(getSimpleCow()).getId();
 
-        mvc.perform(MockMvcRequestBuilders.put("/rest/lactations/" + lactationId + "/cow/"+ cowId))
+        mvc.perform(MockMvcRequestBuilders.put("/rest/lactations/" + lactationId + "/cow/" + cowId))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.response", is("Lactation assigned to desired cow")));
 

@@ -139,8 +139,8 @@ public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
         ResultActions actions = mvc.perform(delete(baseUrl + "/" + entityId).accept(MediaType.APPLICATION_JSON_VALUE));
 
         actions.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.response", is("Entity successfully deleted")));
+               .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+               .andExpect(jsonPath("$.response", is("Entity successfully deleted")));
     }
 
     @After

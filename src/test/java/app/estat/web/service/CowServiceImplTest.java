@@ -50,7 +50,7 @@ public class CowServiceImplTest extends AbstractEntityServiceImplTest<Cow> {
         cow.setBook(Cow.Book.MAIN);
 
         String dateString = "2015-11-18";
-        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(dateString);
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
         cow.setBirth(date);
 
         return cow;

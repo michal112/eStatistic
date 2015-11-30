@@ -42,7 +42,7 @@ public class InseminationServiceImplTest extends AbstractEntityServiceImplTest<I
         Insemination insemination = new Insemination();
 
         String dateString = "2015-11-18";
-        Date date = new SimpleDateFormat("yyyy-mm-dd").parse(dateString);
+        Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateString);
         insemination.setDate(date);
 
         return insemination;
