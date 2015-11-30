@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = Application.class)
 @WebAppConfiguration
-public abstract class AbstactEntityControllerTest<R extends EntityRequest> {
+public abstract class AbstractEntityControllerTest<R extends EntityRequest> {
 
     protected MockMvc mvc;
 

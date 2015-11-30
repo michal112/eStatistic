@@ -21,7 +21,7 @@ import static org.hamcrest.core.Is.isA;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-public class CowControllerTest extends AbstactEntityControllerTest<CowRequest> {
+public class CowControllerTest extends AbstractEntityControllerTest<CowRequest> {
 
     @Autowired
     public void setRepository(CowRepository cowRepository) {
