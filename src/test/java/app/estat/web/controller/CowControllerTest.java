@@ -1,12 +1,10 @@
 package app.estat.web.controller;
 
-import app.estat.web.model.entity.Cow;
-import app.estat.web.model.entity.CowParent;
-import app.estat.web.model.entity.Insemination;
-import app.estat.web.model.entity.Lactation;
+import app.estat.web.model.entity.*;
 import app.estat.web.model.repository.CowRepository;
 import app.estat.web.model.request.CowRequest;
 import app.estat.web.model.response.CowResponse;
+import app.estat.web.service.BullService;
 import app.estat.web.service.CowParentService;
 import app.estat.web.service.InseminationService;
 import app.estat.web.service.LactationService;
@@ -45,6 +43,9 @@ public class CowControllerTest extends AbstractEntityControllerTest<CowRequest> 
 
     @Autowired
     private LactationService lactationService;
+
+    @Autowired
+    private BullService bullService;
 
     @Autowired
     public void setRepository(CowRepository cowRepository) {
@@ -227,6 +228,63 @@ public class CowControllerTest extends AbstractEntityControllerTest<CowRequest> 
         }
 
         lactationService.deleteAll();
+    }
+
+    @Test
+    public void testGetCowWithRelations() throws Exception {
+        Long cowId = Long.valueOf(saveSimpleEntity());
+
+        CowParent cowParent = getSimpleCowParent();
+        Long cowParentId = cowParentService.save(cowParent).getId();
+
+        mvc.perform(MockMvcRequestBuilders.put("/rest/cows/" + cowId + "/parent/" + cowParentId))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.response", is("Cow assigned to desired parent")));
+
+        for (int i = 1; i < 10; i++) {
+            Lactation lactation = new Lactation();
+            lactation.setDate(new SimpleDateFormat("yyyy-MM-dd").parse("2015-12-0" + i));
+            lactation.setNumber(i);
+            Long lactationId = lactationService.save(lactation).getId();
+
+            lactationService.setLactationCow(lactationId, cowId);
+        }
+
+        for (int i = 1; i < 9; i++) {
+            Insemination insemination = new Insemination();
+            insemination.setDate(new SimpleDateFormat("yyyy-MM-dd").parse("2015-11-0" + i));
+            Long inseminationId = inseminationService.save(insemination).getId();
+
+            Bull bull = new Bull();
+            bull.setName("BULL_NAME_" + i);
+            bull.setNumber("BULL_NO_" + i);
+            Long bullId = bullService.save(bull).getId();
+
+            inseminationService.setInseminationBull(inseminationId, bullId);
+            inseminationService.setInseminationCow(inseminationId, cowId);
+        }
+
+        mvc.perform(MockMvcRequestBuilders.get("/rest/cows/" + cowId))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+                .andExpect(jsonPath("$.response.id", is(cowId.intValue())))
+                .andExpect(jsonPath("$.response.book", is(Cow.Book.MAIN.toString())))
+                .andExpect(jsonPath("$.response.name", is("BIANKA")))
+                .andExpect(jsonPath("$.response.number", is("PL-005005445269")))
+                .andExpect(jsonPath("$.response.birth", is("2015-11-25")))
+                .andExpect(jsonPath("$.response.parentName", is("ROMBAS")))
+                .andExpect(jsonPath("$.response.parentNumber", is("PL-005047828211")))
+                .andExpect(jsonPath("$.response.lactationCount", is(9)))
+                .andExpect(jsonPath("$.response.lastLactationDate", is("2015-12-09")))
+                .andExpect(jsonPath("$.response.lastInseminationDate", is("2015-11-08")))
+                .andExpect(jsonPath("$.response.lastInseminationBullName", is("BULL_NAME_8")))
+                .andExpect(jsonPath("$.response.lastInseminationBullNumber", is("BULL_NO_8")));
+
+        inseminationService.deleteAll();
+        bullService.deleteAll();
+        lactationService.deleteAll();
+        repository.deleteAll();
+        cowParentService.deleteAll();
     }
 
 }
